@@ -1,0 +1,156 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.form-wrapper {
+  display: flex;
+  width: 800px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-left {
+  background-color: #2874f0;
+  color: white;
+  padding: 40px;
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure space between content */
+}
+
+.form-left-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the start (top) */
+}
+
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.form-left h3 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  word-spacing: 2px;
+  line-height: 1.3; /* Adjusts line spacing */
+}
+
+.form-left p {
+  font-size: 18px;
+  margin-bottom: 40px;
+  color: #f8e3e3;
+}
+
+.img-LoginSignup {
+  display: flex;
+  justify-content: center; /* Centers the image horizontally */
+  align-items: flex-end; /* Aligns the image to the bottom of the container */
+  height: 100%; /* Ensures the container takes full available height */
+}
+
+.img-LoginSignup img {
+  max-width: 100px; /* Adjust the image width */
+  max-height: 100px; /* Adjust the image height */
+  object-fit: contain; /* Ensures the image maintains aspect ratio */
+}
+
+.form-right {
+  padding: 40px;
+  flex: 1; /* Adjusted to take the remaining 70% of the space */
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.form-container-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.form-container-heading h3 {
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.btn, .toggle-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #ff5722; /* Flipkart-like orange color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.toggle-btn {
+  background-color: #1976d2; /* Flipkart-like blue color */
+}
+
+.toggle-btn:hover, .btn:hover {
+  opacity: 0.9;
+}
+
+.toggle-btn:focus, .btn:focus {
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .form-wrapper {
+    flex-direction: column;
+  }
+
+  .form-left {
+    padding: 20px;
+  }
+
+  .form-right {
+    padding: 20px;
+  }
+}

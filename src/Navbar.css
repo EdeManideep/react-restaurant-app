@@ -1,0 +1,26 @@
+.navbar-div {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    padding: 10px 20px; /* Adds some padding */
+    background-color: #f8f9fa; /* Background color */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better separation */
+  }
+  
+  
+  .navbar-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .navbar-button:hover {
+    background-color: #0056b3; /* Optional: Darker shade on hover */
+  }
+  
