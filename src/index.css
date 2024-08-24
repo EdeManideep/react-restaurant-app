@@ -176,6 +176,11 @@ Menu
   justify-content: center;
 }
 
+/* .add-to-cart-btn{
+  margin-bottom: 5px;
+  color: blue;
+} */
+
 .no-filter-items {
   display: flex;
   justify-content: center;

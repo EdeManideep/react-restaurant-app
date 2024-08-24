@@ -83,6 +83,7 @@ function App() {
                     </h4>
                   </header>
                   <p className='item-text'>{desc}</p>
+                  {/* <button className='add-to-cart-btn'>Add To Cart</button> */}
                 </div>
               </article>
             );
