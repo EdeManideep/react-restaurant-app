@@ -24,3 +24,69 @@
     background-color: #0056b3; /* Optional: Darker shade on hover */
   }
   
+
+  .profile-button {
+    background-color: #926a6a;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .profile-button:hover {
+    background-color: #d3bebe;
+  }
+  
+  .profile-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #444;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1;
+    min-width: 160px;
+    margin-top: 10px;
+  }
+  
+  .logout-button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background-color: #777;
+  }
+  
+  .dropdown-menu .logout-button {
+    border-bottom: 1px solid #666;
+  }
+  
+  .profile-button:after {
+    content: '▼';
+    margin-left: 8px;
+    font-size: 12px;
+    color: white;
+  }
+  
+  .profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

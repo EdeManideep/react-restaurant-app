@@ -1,19 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './LoginSignup.css';
 import emailjs from "emailjs-com";
 
 const API_URL = 'https://sheetdb.io/api/v1/g2oqzfvt4r6au';
 
-
 const Popup = ({ closePopup }) => {
-  // Automatically close the popup after 5 seconds
   React.useEffect(() => {
     const timer = setTimeout(() => {
       closePopup();
-    }, 2500); // 2500ms = 2.5 seconds
+    }, 2500);
 
-    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+    return () => clearTimeout(timer);
   }, [closePopup]);
 
   return (
@@ -26,9 +24,7 @@ const Popup = ({ closePopup }) => {
   );
 };
 
-
-
-const LoginSignup = ({ closeModal, hideLoginButton }) => {
+const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, flagRemoveItemsInLoginSignupValue}) => {
   const [showPopup, setShowPopup] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -45,43 +41,76 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
     password: '',
     confirmPassword: '',
   });
-  const [generatedOTP, setGeneratedOTP] = useState(''); // State to store the generated OTP
-  const [emailVerified, setEmailVerified] = useState(false); // State to track email verification
+  const [generatedOTP, setGeneratedOTP] = useState('');
+  const [emailVerified, setEmailVerified] = useState(false);
   const form = useRef();
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem('loginData'));
+    if (savedData) {
+      setFormData({
+        name: savedData.name || '',
+        email: savedData.email || '',
+        password: savedData.password || '',
+        otp: '',
+        confirmPassword: '',
+      });
+      setIsLogin(savedData.isLogin);
+      hideLoginButtonfunc(isLogin); // Hide the login button if user is already logged in
+      closeModal(false); // Close the modal immediately if the user is logged in
+      
+    }
+  }, [hideLoginButtonfunc, closeModal, isLogin]);
+
+  if(flagRemoveItemsInLoginSignupValue){
+    localStorage.removeItem('loginData');
+  }
+
+  useEffect(() => {
+    // Actions or updates to be performed whenever flagRemoveItemsInLoginSignupValue changes
+    if (flagRemoveItemsInLoginSignupValue) {
+      localStorage.removeItem('loginData');
+      setFormData({
+        name: '',
+        email: '',
+        otp: '',
+        password: '',
+        confirmPassword: '',
+      });
+      // setIsLogin(false);
+    }
+  }, [flagRemoveItemsInLoginSignupValue]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setErrors({ name: '', email: '', otp: '', password: '', confirmPassword: '' });
-    setGeneratedOTP(''); // Reset OTP on form toggle
-    setEmailVerified(false); // Reset email verification on form toggle
+    setGeneratedOTP('');
+    // setEmailVerified(false);
   };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
 
-    // Real-time validation for email field
     if (id === 'email') {
-        const emailPattern = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (value.trim() === '') {
-            setErrors({ ...errors, email: 'Email is required.' });
-            setEmailVerified(false);
-        } else if (!emailPattern.test(value)) {
-            setErrors({ ...errors, email: 'Please enter a valid email address.' });
-            setEmailVerified(false);
-        } else {
-            setErrors({ ...errors, email: '' });
-            setEmailVerified(true); // Email is valid
-        }
+      const emailPattern = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (value.trim() === '') {
+        setErrors({ ...errors, email: 'Email is required.' });
+        setEmailVerified(false);
+      } else if (!emailPattern.test(value)) {
+        setErrors({ ...errors, email: 'Please enter a valid email address.' });
+        setEmailVerified(false);
+      } else {
+        setErrors({ ...errors, email: '' });
+        setEmailVerified(true);
+      }
     } else {
-        setErrors({ ...errors, [id]: '' }); // Clear error for other fields
+      setErrors({ ...errors, [id]: '' });
     }
   };
 
   const handleValidationMessages = () => {
     let newErrors = {};
 
-    // Name Validation (only for signup)
     if (!isLogin) {
       if (formData.name.trim() === '') {
         newErrors.name = 'Name is required.';
@@ -90,7 +119,6 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
       }
     }
 
-    // Email Validation
     const emailPattern = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (formData.email.trim() === '') {
       newErrors.email = 'Email is required.';
@@ -98,13 +126,10 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
       newErrors.email = 'Please enter a valid email address.';
     }
 
-    if (!isLogin) {
-      if (formData.otp.trim() === '') {
-        newErrors.otp = 'OTP is required.';
-      }
+    if (!isLogin && formData.otp.trim() === '') {
+      newErrors.otp = 'OTP is required.';
     }
 
-    // Password Validation
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (formData.password.trim() === '') {
       newErrors.password = 'Password is required.';
@@ -113,30 +138,18 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
         'Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one digit and one symbol.';
     }
 
-    // Confirm Password Validation (only for signup)
-    if (!isLogin) {
-      if (formData.confirmPassword.trim() === '') {
-        newErrors.confirmPassword = 'Confirm Password is required.';
-      } else if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match.';
-      }
+    if (!isLogin && (formData.confirmPassword.trim() === '' || formData.password !== formData.confirmPassword)) {
+      newErrors.confirmPassword = formData.password !== formData.confirmPassword ? 'Passwords do not match.' : 'Confirm Password is required.';
     }
 
     setErrors(newErrors);
-
-    // Return whether the validation passed
     return Object.keys(newErrors).length === 0;
   };
 
   const handleOTPGeneration = () => {
-    // Generate a random 4-digit OTP
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
     setGeneratedOTP(otp);
-
-    // Send OTP via email
     sendEmailOTP(otp);
-
-    // alert(`Your OTP is: ${otp}`); // For testing purposes, we show the OTP in an alert
   };
 
   const sendEmailOTP = (otp) => {
@@ -144,27 +157,23 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
       name: formData.name,
       otp: otp,
       email: formData.email,
-    };    
+    };
 
     emailjs
-      .send(
-        'service_9ghb2jv', 
-        'template_hjhueiv', 
-        templateParams,
-        'Mn_4WKImjdoWqHU8F'
-      )
+      .send('service_9ghb2jv', 'template_hjhueiv', templateParams, 'Mn_4WKImjdoWqHU8F')
       .then(
         (result) => {
-          console.log('OTP sent:', result.text);
-          setShowPopup(true); // Show popup on success
-          // alert("OTP sent to your email successfully.");
+          setShowPopup(true);
         },
         (error) => {
           console.log(error.text);
-          // alert("Error sending OTP, please try again later.");
         }
       );
   };
+
+  const closingtheloginform=()=>{
+    closeModal(false);
+  }
 
   const closePopup = () => {
     setShowPopup(false);
@@ -173,12 +182,10 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform validation
     if (!handleValidationMessages()) {
       return;
     }
 
-    // Verify the OTP
     if (!isLogin && formData.otp !== generatedOTP) {
       setErrors({ ...errors, otp: 'Invalid OTP!' });
       return;
@@ -193,8 +200,9 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
 
       try {
         await axios.post(API_URL, data);
-        closeModal();
-        hideLoginButton();
+        localStorage.setItem('loginData', JSON.stringify({ ...formData, isLogin }));
+        closeModal(closeModal);
+        hideLoginButtonfunc(isLogin);
         setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       } catch (error) {
         setErrors({ ...errors, form: 'Failed to sign up. Please try again.' });
@@ -208,8 +216,11 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
         );
 
         if (user) {
-          hideLoginButton();
-          closeModal();
+          formData.name=user.Name;
+          gettingUserName(user.Name)
+          localStorage.setItem('loginData', JSON.stringify({ ...formData, isLogin }));
+          hideLoginButtonfunc(isLogin);
+          closeModal(false);
         } else {
           setErrors({ ...errors, form: 'Invalid email or password!' });
         }
@@ -233,7 +244,7 @@ const LoginSignup = ({ closeModal, hideLoginButton }) => {
         </div>
 
         <div className="form-right">
-          <button className="close-btn" onClick={closeModal}>×</button>
+          <button className="close-btn" onClick={closingtheloginform}>×</button>
           <form ref={form} onSubmit={handleSubmit}>
             {!isLogin && (
               <div className="form-group">

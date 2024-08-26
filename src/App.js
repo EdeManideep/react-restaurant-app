@@ -1,30 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown } from '@fortawesome/free-regular-svg-icons';
 import items from './data';
 import Filter from './Filter';
-import LoginSignup from './LoginSignup'
+import LoginSignup from './LoginSignup';
 import Navbar from './Navbar';
 
-
 const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
-  if (a.toLowerCase() === 'all') return -1; // Keep 'all' as the first category
-  return a.localeCompare(b); // Sort the rest alphabetically
+  if (a.toLowerCase() === 'all') return -1; 
+  return a.localeCompare(b); 
 });
-
 
 function App() {
   const [menuItems, setMenuItems] = useState(items);
-  menuItems.sort((a, b) => a.title.localeCompare(b.title));
   const [categories] = useState(allCategories);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [hideLoginForm,setHideLoginForm] = useState(false);
-  const [hideLoginButton, setHideLoginButton] = useState(false);
-
-  // const handlesetFlag = (value) =>{
-  //   setFlag(value);
-  // };
+  const [flagRemoveItemsInLoginSignup, setFlagRemoveItemsInLoginSignup] = useState(false);
+  
+  const [hideLoginForm, setHideLoginForm] = useState(false);
+  const [hideLoginButton, setHideLoginButton] = useState(() => {
+    // Retrieve the initial value from local storage, or default to false
+    return JSON.parse(localStorage.getItem('hideLoginButton')) || false;
+  });
+  const [userName, setUserName] = useState(() => {
+    // Retrieve the initial value from local storage, or default to ''
+    return JSON.parse(localStorage.getItem('userName')) || '';
+  })
 
   const updatesearchquery = (value) => {
     setSearchQuery(value);
@@ -34,28 +36,80 @@ function App() {
     setSelectedCategory(category);
   };
 
-  useEffect(() => {
-    let filteredItem = selectedCategory === 'all'
+  const filteredItems = useMemo(() => {
+    let filtered = selectedCategory === 'all'
       ? items
       : items.filter((item) => item.category === selectedCategory);
 
     if (searchQuery) {
-      filteredItem = filteredItem.filter((item) =>
+      filtered = filtered.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    // Sort the items by title
-    filteredItem.sort((a, b) => a.title.localeCompare(b.title));
+    return filtered.sort((a, b) => a.title.localeCompare(b.title));
+  }, [selectedCategory, searchQuery]);
 
-    setMenuItems(filteredItem);
-  }, [searchQuery, selectedCategory]);
+  useEffect(() => {
+    setMenuItems(filteredItems);
+  }, [filteredItems]);
+
+  useEffect(() => {
+    // Store the hideLoginButton state in local storage whenever it changes
+    localStorage.setItem('hideLoginButton', JSON.stringify(hideLoginButton));
+  }, [hideLoginButton]);
+
+  useEffect(() => {
+    // Store the userName state in local storage whenever it changes
+    localStorage.setItem('userName', JSON.stringify(userName));
+  }, [userName]);
+
+  const handleUserDetailsRemoveLocalStorage = () => {
+    localStorage.removeItem('hideLoginButton');
+    localStorage.removeItem('userName');
+    setHideLoginForm(true)
+    setUserName('');
+    setHideLoginButton(false)
+  };  
+
+  const hideLoginButtonfunc = (value) => {
+    setHideLoginButton(value);
+  };
+
+  const closeModal = (value) => {
+    setHideLoginForm(value);
+  }
+
+  const gettingUserName = (value) => {
+    setUserName(value);
+  }
+
+  const setHideLoginFormfunc=(value)=>{
+    setHideLoginForm(value)
+  }
+
+  const flagRemoveItemsInLoginSignupFunction = (value) => {
+    setFlagRemoveItemsInLoginSignup(value);
+  }
 
   return (
     <main>
-      <Navbar handlesetHideLoginForm={setHideLoginForm} hideLoginButtonValue={hideLoginButton} />
-      {hideLoginForm && <LoginSignup closeModal={() => setHideLoginForm(false)} hideLoginButton={() => setHideLoginButton(true)} />}
-
+      <Navbar 
+        handlesetHideLoginForm={setHideLoginFormfunc} 
+        hideLoginButtonValue={hideLoginButton}
+        userNameValue={userName}
+        handleUserDetailsRemoveLocalStorage={handleUserDetailsRemoveLocalStorage}
+        flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
+      />
+      
+      {hideLoginForm && (
+        <LoginSignup 
+          closeModal={closeModal} 
+          hideLoginButtonfunc={hideLoginButtonfunc}
+          gettingUserName = {gettingUserName}
+          flagRemoveItemsInLoginSignupValue = {flagRemoveItemsInLoginSignup}
+        />
+      )}
       <section className="menu section">
         <div className="title">
           <h2>our menu</h2>
@@ -83,7 +137,6 @@ function App() {
                     </h4>
                   </header>
                   <p className='item-text'>{desc}</p>
-                  {/* <button className='add-to-cart-btn'>Add To Cart</button> */}
                 </div>
               </article>
             );
@@ -93,7 +146,6 @@ function App() {
             </div>
           )}
         </div>
-
       </section>
     </main>
   );
