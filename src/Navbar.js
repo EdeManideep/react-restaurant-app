@@ -19,10 +19,26 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ha
     flagRemoveItemsInLoginSignupFunction(true); // Trigger any additional actions on logout
   };  
 
+  let lastScrollTop = 0;
+
+  window.addEventListener('scroll', function() {
+    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      document.querySelector('.navbar-div').style.transform = 'translateY(-100%)';
+    } else {
+      // Scrolling up
+      document.querySelector('.navbar-div').style.transform = 'translateY(0)';
+    }
+
+    lastScrollTop = currentScrollTop;
+  });
+
   return (
     <div className="navbar-div">
       {!hideLoginButtonValue && (
-        <button className="navbar-button" onClick={handleSignInLoginForm}>
+        <button className="navbar-loginsignup-button" onClick={handleSignInLoginForm}>
           Login / Sign Up
         </button>
       )}
@@ -30,6 +46,7 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ha
       {hideLoginButtonValue && (
         <div className="profile-container">
           <button className="profile-button" onClick={toggleDropdown}>
+            <img src='./images/profile.png' alt='Profile' className='profile-img-navbar' />
             {userNameValue}
           </button>
           {isDropdownVisible && (

@@ -5,6 +5,7 @@ import items from './data';
 import Filter from './Filter';
 import LoginSignup from './LoginSignup';
 import Navbar from './Navbar';
+import './App.css'
 
 const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
   if (a.toLowerCase() === 'all') return -1; 
@@ -92,6 +93,10 @@ function App() {
     setFlagRemoveItemsInLoginSignup(value);
   }
 
+  const sampleFun = () => {
+    console.log('hello from items click');
+  }
+
   return (
     <main>
       <Navbar 
@@ -127,18 +132,18 @@ function App() {
             menuItems.map((menuItem) => {
             const { id, title, img, desc, price } = menuItem;
             return (
-              <article key={id} className='menu-item'>
-                <img src={img} alt={title} className='photo' />
-                <div className='item-info'>
-                  <header>
-                    <h4>{title}</h4>
-                    <h4 className='price'>
-                      <span>₹{price}</span>
-                    </h4>
-                  </header>
-                  <p className='item-text'>{desc}</p>
+                <div key={id} className='menu-item' onClick={sampleFun}>
+                  <img src={img} alt={title} className='photo' />
+                  <div className='item-info'>
+                    <header>
+                      <h4>{title}</h4>
+                      <h4 className='price'>
+                        <span>₹{price}</span>
+                      </h4>
+                    </header>
+                    <p className='item-text'>{desc}</p>
+                  </div>
                 </div>
-              </article>
             );
           })): (
             <div className = 'no-filter-items'>

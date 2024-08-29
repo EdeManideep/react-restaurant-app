@@ -1,48 +1,56 @@
-.navbar-div {
+  .navbar-div {
     display: flex;
-    justify-content: flex-end; /* Aligns the button to the right */
-    padding: 10px 20px; /* Adds some padding */
-    background-color: #f8f9fa; /* Background color */
+    justify-content: flex-end;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for better separation */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth effect */
   }
   
-  
-  .navbar-button {
+  .navbar-loginsignup-button {
     padding: 10px 15px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
   }
   
-  .navbar-button:hover {
+  .navbar-loginsignup-button:hover {
     background-color: #0056b3; /* Optional: Darker shade on hover */
   }
   
 
   .profile-button {
-    background-color: #926a6a;
-    color: white;
+    background-color: #6754d2;
+    color: rgb(255, 255, 255);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
     transition: background-color 0.3s ease;
   }
   
   .profile-button:hover {
-    background-color: #d3bebe;
+    background-color: #503d99;
   }
   
   .profile-container {
     position: relative;
     display: inline-block;
+  }
+
+  .profile-img-navbar{
+    height: 25px;
+    width: 25px;
+    margin-right: 5px;
   }
   
   .dropdown-menu {
@@ -54,28 +62,28 @@
     border-radius: 5px;
     overflow: hidden;
     z-index: 1;
-    min-width: 160px;
-    margin-top: 10px;
+    min-width: 100px;
+    margin-top: 15px;
   }
   
   .logout-button {
-    background-color: #555;
+    background-color: #797ae1;
     color: white;
     border: none;
-    padding: 12px 16px;
-    width: 100%;
-    text-align: left;
+    padding: 8px 10px;
+    width: 100px;
+    text-align: center;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     transition: background-color 0.3s ease;
   }
   
   .logout-button:hover {
-    background-color: #777;
+    background-color: #6d4bd3;
   }
   
   .dropdown-menu .logout-button {
-    border-bottom: 1px solid #666;
+    border-bottom: 2px solid #6658ca;
   }
   
   .profile-button:after {

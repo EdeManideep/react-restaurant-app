@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './Filter.css'; // Ensure to import the CSS file
+import Marquee from "react-fast-marquee";
 
 const Filter = ({ categories, filterItem, updatesearchquery }) => {
   const [inputValue, setInputValue] = useState('');
@@ -27,22 +29,34 @@ const Filter = ({ categories, filterItem, updatesearchquery }) => {
   return (
     <div>
       <div className='btn-container'>
-        {categories.map((category, index) => (
-          <button
-            type="button"
-            className="filter-btn"
-            key={index}
-            onClick={() => handleCategoryClick(category)}
+        <div className="items--scroll">
+          <Marquee 
+              gradient={false} 
+              speed={80} 
+              pauseOnHover={true}
+              pauseOnClick={true} 
+              delay={0}
+              play={true} 
+              direction="left"
           >
-            {category}
-          </button>
-        ))}
+            {categories.map((category, index) => (
+              <button
+                type="button"
+                className={`filter-btn ${category === currentCategory ? 'selected' : ''}`}
+                key={index}
+                onClick={() => handleCategoryClick(category)}
+              >
+                {category}
+              </button>
+            ))}
+            </Marquee>
+        </div>
       </div>
-      <br></br>
+      
       <div className='search-filter-items-div'>
         <input
           type='text'
-          className = 'filter-input-text'
+          className='filter-input-text'
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Search for item"

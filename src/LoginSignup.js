@@ -19,6 +19,7 @@ const Popup = ({ closePopup }) => {
       <div className="popup-content">
         <img src="./images/email-sent.png" alt="Success" />
         <p>Email sent successfully!</p>
+        <p>Check your email for OTP</p>
       </div>
     </div>
   );
@@ -135,7 +136,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, flagRem
       newErrors.password = 'Password is required.';
     } else if (!passwordPattern.test(formData.password)) {
       newErrors.password =
-        'Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one digit and one symbol.';
+        'At least 8 characters long, contain one uppercase letter, one lowercase letter, one digit and one symbol.';
     }
 
     if (!isLogin && (formData.confirmPassword.trim() === '' || formData.password !== formData.confirmPassword)) {
@@ -200,10 +201,11 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, flagRem
 
       try {
         await axios.post(API_URL, data);
-        localStorage.setItem('loginData', JSON.stringify({ ...formData, isLogin }));
-        closeModal(closeModal);
-        hideLoginButtonfunc(isLogin);
-        setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+        setIsLogin(true);
+        // localStorage.setItem('loginData', JSON.stringify({ ...formData, isLogin }));
+        // closeModal(closeModal);
+        // hideLoginButtonfunc(isLogin);
+        // setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       } catch (error) {
         setErrors({ ...errors, form: 'Failed to sign up. Please try again.' });
       }

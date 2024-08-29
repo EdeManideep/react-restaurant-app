@@ -1,0 +1,68 @@
+/* Style for buttons */
+.filter-btn {
+  background: orange;
+  color: var(--clr-white);
+  border-color: transparent;
+  font-size: 1rem;
+  text-transform: capitalize;
+  margin: 0 10px;
+  letter-spacing: 1px;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--radius);
+  z-index: 1;
+}
+
+/* Highlight the selected menu item */
+.filter-btn.selected {
+  background: rgb(229, 153, 13);
+  color: white;
+  border: 2px solid darkorchid; /* Optional: Add a border to the selected item */
+}
+
+/* Hover effect */
+.filter-btn:hover {
+  background: rgb(255, 165, 0); /* Slightly different shade on hover */
+  z-index: 2;
+}
+
+/* Style for the search input */
+.filter-input-text {
+  outline: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  height: 30px;
+  margin-top: 30px;
+  border-color: darkorchid;
+  width: 200px;
+  box-sizing: border-box;
+}
+.search-filter-items-div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px;
+  /* width: 200px; */
+  /* margin-bottom: 20px; */
+}
+
+.btn-container {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  margin-top: 2.5rem;
+  padding: 0 2rem;
+}
+
+.items--scroll {
+  width: 100%;
+  margin: 0 2rem;
+}
+
+.marquee {
+  padding: 3rem 0;
+}
