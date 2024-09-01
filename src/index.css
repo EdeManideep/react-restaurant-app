@@ -200,7 +200,7 @@ Menu
   align-items: center;
   transition: transform 0.3s ease-in-out;
   gap: 1rem;
-  max-width: 30rem; /* Increase the width slightly */
+  max-width: 30rem;
 }
 
 .menu-item:hover {
@@ -209,7 +209,7 @@ Menu
 
 .photo {
   object-fit: cover;
-  height: 250px; /* Increase height */
+  height: 250px;
   width: 350px;
   border-radius: var(--radius);
 }
@@ -217,6 +217,7 @@ Menu
 .item-info {
   text-align: center;
   padding: 1rem;
+  padding-bottom: 0px;
 }
 
 .item-info header {
@@ -226,29 +227,168 @@ Menu
 }
 
 .item-info h4 {
-  margin-bottom: 0.5rem;
   letter-spacing: 0.5px;
   font-size: 1rem;
   color: var(--clr-grey-1);
 }
 
 .price {
-  background-color: #ffc107;
-  padding: 0.25rem 0.35rem; /* Adjust padding if necessary */
+  background-color: #ffffff;
+  color: #4a90e2; 
+  padding: 0.2rem 0.8rem;
   border-radius: 5px;
   font-weight: bold;
-  font-size: 1.25rem;
-  color: var(--clr-grey-1);
-  height: 1.5rem; /* Adjust the height as needed */
-  display: flex; /* Flexbox to center content vertically */
-  align-items: center; /* Center content vertically */
+  font-size: 1.2rem;
+  box-shadow: var(--light-shadow);
+  margin: 1px;
+  letter-spacing: normal;
 }
 
 .item-text {
   margin-bottom: 0;
-  padding-top: 1rem;
   color: #777;
   line-height: 1.5;
+  flex-grow: 1; /* Ensure it takes up remaining space */
+}
+
+.item-info-center-algin {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  padding-top: 1px;
+  gap: 1rem; /* Add gap between elements */
+  height: 100%;
+}
+
+.no-filter-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 1100px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.button-cart-price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 25px;
+  margin: 0;
+  gap: 1rem;
+  box-shadow: var(--light-shadow);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  padding: 10px;
+}
+
+.button-cart-price-item:hover {
+  background-color: #ffffff;
+}
+
+.cart-image-on-button{
+  height: 20px;
+  width: 20px;
+}
+
+/* From Uiverse.io by satyamchaudharydev */ 
+.add-to-cart-button {
+  --primary-color: rgb(255, 208, 0);
+  --secondary-color: #fff;
+  --hover-color: rgb(208, 183, 70);
+  --arrow-width: 15px;
+  --arrow-stroke: 3px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 20px;
+  color: var(--secondary-color);
+  padding: 0.2rem 0.8rem;
+  background: var(--primary-color);
+  display: flex;
+  transition: 0.2s background;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: bold;
+}
+
+.add-to-cart-button .arrow-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-to-cart-button .arrow {
+  margin-top: 1px;
+  width: var(--arrow-width);
+  background: transparent;
+  height: var(--arrow-stroke);
+  position: relative;
+  transition: 0.2s;
+}
+
+.add-to-cart-button .arrow::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  border: solid var(--secondary-color);
+  border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+  display: inline-block;
+  top: -3px;
+  right: 3px;
+  transition: 0.2s;
+  padding: 3px;
+  transform: rotate(-45deg);
+}
+
+.add-to-cart-button:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+  transform: translateX(-5px);
+}
+
+.add-to-cart-button:hover .arrow {
+  background: var(--secondary-color);
+}
+
+.add-to-cart-button:hover .arrow:before {
+  right: 0;
+}
+
+.cart-icon-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  cursor: pointer;
+  z-index: 999;
+  background-color: lightblue;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cart-icon-button:hover {
+  background-color: rgb(170, 170, 206);
+}
+
+.cart-icon-button img {
+  width: 65%;
+  height: 65%;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.cart-icon-button img:hover{
+  transform: translateX(5px);
 }
 
 @media screen and (min-width: 768px) {

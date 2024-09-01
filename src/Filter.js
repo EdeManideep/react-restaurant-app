@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee";
 
 const Filter = ({ categories, filterItem, updatesearchquery }) => {
   const [inputValue, setInputValue] = useState('');
-  const [currentCategory, setCurrentCategory] = useState(categories[0]);
+  const [currentCategory, setCurrentCategory] = useState('all');
 
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -21,7 +21,6 @@ const Filter = ({ categories, filterItem, updatesearchquery }) => {
     filterItem(category);
   };
 
-  // Set default category on initial mount
   useEffect(() => {
     filterItem(currentCategory);
   }, [filterItem, currentCategory]);
@@ -29,7 +28,7 @@ const Filter = ({ categories, filterItem, updatesearchquery }) => {
   return (
     <div>
       <div className='btn-container'>
-        <div className="items--scroll">
+        <div className="items-button-scroll">
           <Marquee 
               gradient={false} 
               speed={80} 
