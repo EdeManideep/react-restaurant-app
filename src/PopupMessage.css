@@ -1,0 +1,21 @@
+.popup-message {
+    position: fixed;
+    top: 12%;
+    right: 1%;
+    background-color: #28a745;
+    padding: 8px 13px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+  }
+  
+  .popup-message p {
+    margin: 0;
+    color: white;
+  }
+  

@@ -52,18 +52,41 @@
     width: 25px;
     margin-right: 5px;
   }
+
+  .restaurant-logo-navbar{
+    width: 20%;
+    margin-right: 1042px;
+  }
   
   .dropdown-menu {
     position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: #444;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    top: 50px;
+    right: 0px;
+    background-color: transparent;
+    box-shadow: none;
     border-radius: 5px;
     overflow: hidden;
     z-index: 1;
     min-width: 100px;
     margin-top: 15px;
+  }
+
+  .dropdown-menu-buttons{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .add-item-button{
+    background-color: #46d27c;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 5px;
   }
   
   .logout-button {

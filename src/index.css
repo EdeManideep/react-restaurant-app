@@ -367,7 +367,7 @@ Menu
   width: 55px;
   height: 55px;
   cursor: pointer;
-  z-index: 999;
+  z-index: 998;
   background-color: lightblue;
   border-radius: 50%;
   display: flex;

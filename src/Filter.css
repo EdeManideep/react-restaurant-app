@@ -18,7 +18,7 @@
 .filter-btn.selected {
   background: rgb(229, 153, 13);
   color: white;
-  border: 2px solid darkorchid; /* Optional: Add a border to the selected item */
+  border: 2px solid rgb(105, 103, 28); /* Optional: Add a border to the selected item */
 }
 
 /* Hover effect */
@@ -54,8 +54,9 @@
   align-items: center;
   justify-content: center; 
   width: 100%;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   padding: 0 2rem;
+  margin-bottom: 15px;
 }
 
 .items-button-scroll {

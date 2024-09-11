@@ -1,24 +1,40 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown } from '@fortawesome/free-regular-svg-icons';
-import items from './data';
+// import items from './data';
 import Filter from './Filter';
 import LoginSignup from './LoginSignup';
 import Navbar from './Navbar';
-import Cart from './Cart'; 
-
-const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
-  if (a.toLowerCase() === 'all') return -1; 
-  return a.localeCompare(b); 
-});
+import Cart from './Cart';
+import AddItems from './AddItems'
+import PopupMessage from './PopupMessage';
+import BackToTop from './BackToTop';
 
 function App() {
+  const [items, setItems] = useState([]);
   const [menuItems, setMenuItems] = useState(items);
-  const [categories] = useState(allCategories);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/items') // URL of your backend server
+      .then(response => response.json())
+      .then(data => setItems(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  // console.log(items);
+
+  const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
+    if (a.toLowerCase() === 'all') return -1; 
+    return a.localeCompare(b); 
+  });
+  // console.log('allCategories:',{allCategories});
+  
+  // const [categories] = useState(allCategories);
+  // console.log('categories:',{categories});
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [flagRemoveItemsInLoginSignup, setFlagRemoveItemsInLoginSignup] = useState(false);
-  
+
   const [hideLoginForm, setHideLoginForm] = useState(false);
   const [hideLoginButton, setHideLoginButton] = useState(() => {
     return JSON.parse(localStorage.getItem('hideLoginButton')) || false;
@@ -27,15 +43,30 @@ function App() {
     return JSON.parse(localStorage.getItem('userName')) || '';
   });
 
-  const [cartItems, setCartItems] = useState(() => {
-    return JSON.parse(localStorage.getItem('cartItems')) || [];
+  const [userId, setUserId] = useState(() => {
+    return JSON.parse(localStorage.getItem('userId')) || '';
   });
+
+  const [accountType, setAccountType] = useState(() => {
+    return JSON.parse(localStorage.getItem('accountType')) || '';
+  });
+
+  // console.log(`userId:${userId}`);
+  const [cartItems, setCartItems] = useState(() => {
+    return JSON.parse(localStorage.getItem(`cartItems${userId}`)) || [];
+  });
+  
+  useEffect(() => {
+    // Fetch cart items from localStorage whenever userId changes
+    const storedCartItems = JSON.parse(localStorage.getItem(`cartItems${userId}`)) || [];
+    setCartItems(storedCartItems);
+  }, [userId]); // Re-run effect whenever userId changes
   
   const [showCart, setShowCart] = useState(false);  // State to show/hide Cart
 
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    localStorage.setItem(`cartItems${userId}`, JSON.stringify(cartItems));
+  }, [userId, cartItems]);
 
   const updatesearchquery = (value) => {
     setSearchQuery(value);
@@ -44,7 +75,7 @@ function App() {
   const filterItem = (category) => {
     setSelectedCategory(category);
   };
-
+// console.log(userId,"uid")
   const filteredItems = useMemo(() => {
     let filtered = selectedCategory === 'all'
       ? items
@@ -52,12 +83,12 @@ function App() {
   
     if (searchQuery) {
       filtered = filtered.filter((item) =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
   
-    return filtered.sort((a, b) => a.title.localeCompare(b.title));
-  }, [selectedCategory, searchQuery]);  
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+  }, [items, selectedCategory, searchQuery]);  
 
   useEffect(() => {
     setMenuItems(filteredItems);
@@ -68,15 +99,24 @@ function App() {
   }, [hideLoginButton]);
 
   useEffect(() => {
+    localStorage.setItem('userId', JSON.stringify(userId));
     localStorage.setItem('userName', JSON.stringify(userName));
-  }, [userName]);
+    localStorage.setItem('accountType', JSON.stringify(accountType));
+  }, [userId, userName, accountType]);
 
   const handleUserDetailsRemoveLocalStorage = () => {
     localStorage.removeItem('hideLoginButton');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('accountType');
     setHideLoginForm(true);
     setUserName('');
+    setUserId('');
+    setAccountType('');
+    setCartItems([]);
     setHideLoginButton(false);
+    setPopupMessageTop('');
+    setTimeout(() => setPopupMessageTop(`User Logged Out Successfully`), 0);
   };  
 
   const hideLoginButtonfunc = (value) => {
@@ -89,6 +129,16 @@ function App() {
 
   const gettingUserName = (value) => {
     setUserName(value);
+    setPopupMessageTop('');
+    setTimeout(() => setPopupMessageTop(`${value} Login Successfully`), 0);
+  }
+
+  const gettingUserId = (value) => {
+    setUserId(value);
+  }
+
+  const gettingAccountType = (value) => {
+    setAccountType(value);
   }
 
   const setHideLoginFormfunc = (value) => {
@@ -99,24 +149,30 @@ function App() {
     setFlagRemoveItemsInLoginSignup(value);
   }
 
+  const [visibleAddItem, setVisibleItem] = useState(false);
+
+  const setVisibleItemFunction = () =>{
+    setVisibleItem(true);
+  }
+
   const addToCart = (item) => {
     if (userName) {
       setCartItems((prevItems) => {
         // Check if the item already exists in the cart
-        const existingItem = prevItems.find(cartItem => cartItem.title === item.title);
+        const existingItem = prevItems.find(cartItem => cartItem.name === item.name);
   
         if (existingItem) {
           // If the item exists, update its count
           return prevItems.map(cartItem =>
-            cartItem.title === item.title
+            cartItem.name === item.name
               ? { ...cartItem, count: cartItem.count + 1 }
               : cartItem
           );
         } else {
           // If the item doesn't exist, add it to the cart with count 1
           const cartItem = {
-            img: item.img,
-            title: item.title,
+            image: item.image,
+            name: item.name,
             price: item.price,
             count: 1,
           };
@@ -132,16 +188,20 @@ function App() {
     setShowCart((prevShowCart) => !prevShowCart);
   };
 
-  function updateCartItem(title, newQuantity) {
+  const toggleAddItemPage = () => {
+    setVisibleItem(prevVisibleAddItem => !prevVisibleAddItem);
+  }
+
+  function updateCartItem(name, newQuantity) {
     let updatedCartItems;
   
     if (newQuantity === 0) {
       // Remove the item from the cart
-      updatedCartItems = cartItems.filter(item => item.title !== title);
+      updatedCartItems = cartItems.filter(item => item.name !== name);
     } else {
       // Update the quantity of the item in the cart
       updatedCartItems = cartItems.map(item => {
-        if (item.title === title) {
+        if (item.name === name) {
           return { ...item, count: newQuantity };
         }
         return item;
@@ -150,23 +210,33 @@ function App() {
   
     // Update state and local storage
     setCartItems(updatedCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    localStorage.setItem(`cartItems${userId}`, JSON.stringify(updatedCartItems));
   }
 
   //clear the cartItems
   function clearCartItems(){
     setCartItems([]);
-    localStorage.removeItem('cartItems');
+    localStorage.removeItem(`cartItems${userId}`);
   }
+
+  const [popupMessageTop, setPopupMessageTop] = useState(''); 
   
   return (
     <main>
+
+      {/* Popup message for updates */}
+      <PopupMessage message={popupMessageTop} duration={1500} />
+      <BackToTop />
+
       <Navbar 
         handlesetHideLoginForm={setHideLoginFormfunc} 
         hideLoginButtonValue={hideLoginButton}
+        userIdValue={userId}
         userNameValue={userName}
+        accountTypeValue={accountType}
         handleUserDetailsRemoveLocalStorage={handleUserDetailsRemoveLocalStorage}
         flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
+        setVisibleItemFunction={setVisibleItemFunction}
       />
       
       {hideLoginForm && (
@@ -174,11 +244,13 @@ function App() {
           closeModal={closeModal} 
           hideLoginButtonfunc={hideLoginButtonfunc}
           gettingUserName={gettingUserName}
+          gettingUserId={gettingUserId}
+          gettingAccountType={gettingAccountType}
           flagRemoveItemsInLoginSignupValue={flagRemoveItemsInLoginSignup}
         />
       )}
 
-      {!showCart ? (
+      {!showCart && !visibleAddItem ? (
         <section className="menu section">
           <div className="title">
             <h2>our menu</h2>
@@ -186,7 +258,7 @@ function App() {
           </div>
 
           <Filter 
-            categories={categories} 
+            allCategories={allCategories} 
             filterItem={filterItem} 
             updatesearchquery={updatesearchquery}
           />
@@ -194,24 +266,27 @@ function App() {
           <div className='section-center'>
             {menuItems.length ? (
               menuItems.map((menuItem, index) => {
-              const { id, title, img, desc, price } = menuItem;
+              const { id, name, image, description, price,count_products_available
+              } = menuItem;
               return (
                   <div key={id} className='menu-item'>
-                    <img src={img} alt={title} className='photo' />
+                    <img src={image} alt={name} className='photo' />
                     <div className='item-info'>
                       <header>
-                        <h4>{title}</h4>
+                        <h4>{name}</h4>
                       </header>
                       
                     </div>
 
                     <div className='item-info-center-algin'>
-                      <p className='item-text'>{desc}</p>
-
+                      <p className='item-text'>{description}</p>
+                      <h5 style={{ color: 'red' }}>Available Items: {count_products_available}</h5>
                       <div className='button-cart-price-item'>
-                        {/* <button onClick={() => addToCart(menuItem)}>Add</button> */}
 
-                        <button onClick={() => addToCart(menuItem)} className='add-to-cart-button'>
+                        <button onClick={() => {addToCart(menuItem); 
+                                                setPopupMessageTop(''); // Clear the message temporarily
+                                                setTimeout(() => setPopupMessageTop(`${name} Added To Cart`), 0);}
+                                        } className='add-to-cart-button'>
                           ADD TO CART <img src="./images/cart-icon.png" alt="Cart Icon" className='cart-image-on-button'/>
                           <div class="arrow-wrapper">
                               <div class="arrow"></div>
@@ -238,10 +313,11 @@ function App() {
             <img src="./images/cart-icon.png" alt="Cart Icon" />
           </div>
         </section>
-      ) : (
+      ) : showCart && !visibleAddItem ? (
         <Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/> 
+      ) : (
+        <AddItems toggleAddItemPage={toggleAddItemPage}/>
       )}
-      
     </main>
   );
 }

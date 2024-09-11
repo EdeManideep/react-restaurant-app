@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Filter.css'; // Ensure to import the CSS file
 import Marquee from "react-fast-marquee";
 
-const Filter = ({ categories, filterItem, updatesearchquery }) => {
+const Filter = ({ allCategories, filterItem, updatesearchquery }) => {
   const [inputValue, setInputValue] = useState('');
   const [currentCategory, setCurrentCategory] = useState('all');
 
@@ -38,7 +38,8 @@ const Filter = ({ categories, filterItem, updatesearchquery }) => {
               play={true} 
               direction="left"
           >
-            {categories.map((category, index) => (
+            {/* {console.log(allCategories)} */}
+            {allCategories.map((category, index) => (
               <button
                 type="button"
                 className={`filter-btn ${category === currentCategory ? 'selected' : ''}`}
