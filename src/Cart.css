@@ -227,7 +227,7 @@
   fill: white;
 }
 /* text */
-.text {
+.delete-items-button-text {
   position: absolute;
   right: 0%;
   width: 0%;
@@ -250,7 +250,7 @@
   padding-left: 17px;
 }
 /* hover effect button's text */
-.delete-items-button:hover .text {
+.delete-items-button:hover .delete-items-button-text {
   opacity: 1;
   width: 70%;
   transition-duration: 0.3s;

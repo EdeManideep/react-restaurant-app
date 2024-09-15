@@ -61,7 +61,6 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
       setIsLogin(savedData.isLogin);
       hideLoginButtonfunc(isLogin); // Hide the login button if user is already logged in
       closeModal(false); // Close the modal immediately if the user is logged in
-      
     }
   }, [hideLoginButtonfunc, closeModal, isLogin]);
 
@@ -90,6 +89,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
     setGeneratedOTP('');
     // setEmailVerified(false);
   };
+
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -365,18 +365,6 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
                   onChange={handleInputChange}
                 />
                 {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
-              </div>
-            )}
-            {isLogin && (
-              <div>
-                <div className="captcha-box">
-                  <h3>H T U V h</h3>
-                  <button className="generate-btn">
-                    <img src="./images/refresh.png" className="refresh-img" alt='Refresh_Image'/>
-                  </button>
-                </div>
-                <input type="text" className="userInput" placeholder="Enter captcha" />
-                <button className="check-btn">Check</button>
               </div>
             )}
 

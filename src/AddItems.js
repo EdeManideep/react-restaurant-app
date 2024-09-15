@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import './AddItems.css';
 import PopupMessage from './PopupMessage';
 
-const getRandomQuantity = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 function AddItem({ toggleAddItemPage }) {
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Non-veg Biryani',
+        category: '',
         price: '',
-        image: 'https://raw.githubusercontent.com/EdeManideep/Food_Item_Data_Images/main/Food_Item_Data_Images/item-.jpeg',
+        image: '',
         description: '',
-        count_products_available: getRandomQuantity(10, 40)
+        count_products_available: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -56,11 +52,11 @@ function AddItem({ toggleAddItemPage }) {
             if (response.ok) {
                 setFormData({
                     name: '',
-                    category: 'Non-veg Biryani',
+                    category: '',
                     price: '',
-                    image: 'https://raw.githubusercontent.com/EdeManideep/Food_Item_Data_Images/main/Food_Item_Data_Images/item-.jpeg',
+                    image: '',
                     description: '',
-                    count_products_available: getRandomQuantity(10, 40),
+                    count_products_available: '',
                 });
 
                 setPopupMessageTop('');
@@ -100,7 +96,7 @@ function AddItem({ toggleAddItemPage }) {
                         value={formData.name}
                         onChange={handleChange}
                         maxLength="60"
-                        className="form-input"
+                        className="form-input-add-item"
                     />
                     {errors.name && <p className="error-message">{errors.name}</p>}
                 </div>
@@ -114,7 +110,7 @@ function AddItem({ toggleAddItemPage }) {
                         value={formData.category}
                         onChange={handleChange}
                         maxLength="50"
-                        className="form-input"
+                        className="form-input-add-item"
                     />
                     {errors.category && <p className="error-message">{errors.category}</p>}
                 </div>
@@ -129,7 +125,7 @@ function AddItem({ toggleAddItemPage }) {
                         onChange={handleChange}
                         min='1'
                         max="999999"
-                        className="form-input"
+                        className="form-input-add-item"
                     />
                     {errors.price && <p className="error-message">{errors.price}</p>}
                 </div>
@@ -143,7 +139,7 @@ function AddItem({ toggleAddItemPage }) {
                         value={formData.image}
                         onChange={handleChange}
                         maxLength="110"
-                        className="form-input"
+                        className="form-input-add-item"
                     />
                     {errors.image && <p className="error-message">{errors.image}</p>}
                 </div>
@@ -171,7 +167,7 @@ function AddItem({ toggleAddItemPage }) {
                         onChange={handleChange}
                         min='1'
                         max="999"
-                        className="form-input"
+                        className="form-input-add-item"
                     />
                     {errors.count_products_available && <p className="error-message">{errors.count_products_available}</p>}
                 </div>

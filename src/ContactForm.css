@@ -1,0 +1,157 @@
+.boby-contactForm{
+    display: flex;
+    justify-content: center;
+    margin-top: 120px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    width: 400px;
+    padding: 2rem;
+    background-color: #fff2cc;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-family: 'var(--primaryFont)', sans-serif;
+    font-size: 2.5rem;
+    color: #f9a825;
+    margin-bottom: 2rem;
+    text-align: center; /* Center the title */
+    width: 100%;
+}
+
+.input-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.input-container label {
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    background-color: #fefdfd;
+    padding: 0 5px;
+    font-family: 'var(--primaryFont)', sans-serif;
+    font-size: 1rem;
+    color: #f9a825;
+    z-index: 1;
+}
+
+.form-input, .form-message {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #f9a825; /* Consistent border color */
+    border-radius: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: white;
+    outline: none; /* Removes the default outline on focus */
+}
+
+.form-input:focus, .form-message:focus {
+    border-color: #f9a825; /* Keeps the border color on focus */
+    outline: none; /* Removes any additional outlines */
+}
+
+.form-input::placeholder, .form-message::placeholder {
+    color: #b3b3b3; /* Light gray color for placeholder text */
+    font-size: 0.875rem; /* Smaller font size (14px) */
+    font-weight: 400; /* Regular weight */
+}
+
+.form-input {
+    height: 50px;
+}
+
+.form-message {
+    height: 120px;
+    resize: none;
+}
+
+.submit-btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    height: 45px;
+}
+
+p{
+    margin-bottom : 0px;
+}
+
+.submit-btn button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    background-color: #f9a825;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'var(--primaryFont)', sans-serif;
+    font-size: 1rem;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn button:hover {
+    background-color: #a6670e;
+}
+
+.submit-icon {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.submit-btn button:hover .submit-icon {
+    animation: fly 1s ease-in-out;
+}
+
+@keyframes fly {
+    0%, 100% {
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+    50% {
+        transform: translate(20px, -10px) rotate(-30deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .form-title {
+        font-size: 2rem;
+    }
+
+    .submit-btn button {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    }
+
+    @media (max-width: 500px) {
+    .contact-form {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .form-title {
+        font-size: 1.75rem;
+    }
+
+    .submit-btn button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}

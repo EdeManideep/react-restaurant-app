@@ -20,7 +20,7 @@
 }
 
 .form-group-add-item {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .form-label {
@@ -28,11 +28,12 @@
     margin-bottom: 5px;
 }
 
-.form-input, .form-textarea {
+.form-input-add-item, .form-textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    outline: none;
 }
 
 .form-textarea {
@@ -58,4 +59,5 @@
     color: red;
     font-size: 14px;
     margin-top: 5px;
+    margin-bottom: 5px;
 }

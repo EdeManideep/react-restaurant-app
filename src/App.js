@@ -7,6 +7,7 @@ import LoginSignup from './LoginSignup';
 import Navbar from './Navbar';
 import Cart from './Cart';
 import AddItems from './AddItems'
+import ContactForm from './ContactForm';
 import PopupMessage from './PopupMessage';
 import BackToTop from './BackToTop';
 
@@ -71,6 +72,8 @@ function App() {
   const updatesearchquery = (value) => {
     setSearchQuery(value);
   };
+  // console.log(searchQuery);
+
 
   const filterItem = (category) => {
     setSelectedCategory(category);
@@ -105,6 +108,8 @@ function App() {
   }, [userId, userName, accountType]);
 
   const handleUserDetailsRemoveLocalStorage = () => {
+    setPopupMessageTop('');
+    setTimeout(() => setPopupMessageTop(`${userName} Logged Out Successfully`), 0);
     localStorage.removeItem('hideLoginButton');
     localStorage.removeItem('userName');
     localStorage.removeItem('userId');
@@ -115,8 +120,6 @@ function App() {
     setAccountType('');
     setCartItems([]);
     setHideLoginButton(false);
-    setPopupMessageTop('');
-    setTimeout(() => setPopupMessageTop(`User Logged Out Successfully`), 0);
   };  
 
   const hideLoginButtonfunc = (value) => {
@@ -153,6 +156,14 @@ function App() {
 
   const setVisibleItemFunction = () =>{
     setVisibleItem(true);
+    setVisibleContactForm(false);
+  }
+
+  const [visibleContactForm, setVisibleContactForm] = useState(false);
+
+  const setVisibleContactFormFunction = () =>{
+    setVisibleContactForm(true);
+    setVisibleItem(false);
   }
 
   const addToCart = (item) => {
@@ -237,6 +248,7 @@ function App() {
         handleUserDetailsRemoveLocalStorage={handleUserDetailsRemoveLocalStorage}
         flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
         setVisibleItemFunction={setVisibleItemFunction}
+        setVisibleContactFormFunction={setVisibleContactFormFunction}
       />
       
       {hideLoginForm && (
@@ -250,7 +262,7 @@ function App() {
         />
       )}
 
-      {!showCart && !visibleAddItem ? (
+      {!showCart && !visibleAddItem && !visibleContactForm ? (
         <section className="menu section">
           <div className="title">
             <h2>our menu</h2>
@@ -284,8 +296,10 @@ function App() {
                       <div className='button-cart-price-item'>
 
                         <button onClick={() => {addToCart(menuItem); 
-                                                setPopupMessageTop(''); // Clear the message temporarily
-                                                setTimeout(() => setPopupMessageTop(`${name} Added To Cart`), 0);}
+                                                if(userName){
+                                                  setPopupMessageTop(''); // Clear the message temporarily
+                                                  setTimeout(() => setPopupMessageTop(`${name} Added To Cart`), 0);
+                                                }}
                                         } className='add-to-cart-button'>
                           ADD TO CART <img src="./images/cart-icon.png" alt="Cart Icon" className='cart-image-on-button'/>
                           <div class="arrow-wrapper">
@@ -300,9 +314,13 @@ function App() {
                     </div>
                   </div>
               );
-            })): (
+            })): menuItems.length  === 0 && searchQuery ? (
               <div className='no-filter-items'>
                   <h4>No items found <FontAwesomeIcon icon={faFaceFrown} /></h4>
+              </div>
+            ) : (
+              <div className='no-filter-items'>
+                  <h4>Loding <FontAwesomeIcon icon={faFaceFrown} /></h4>
               </div>
             )}
           </div>
@@ -313,7 +331,9 @@ function App() {
             <img src="./images/cart-icon.png" alt="Cart Icon" />
           </div>
         </section>
-      ) : showCart && !visibleAddItem ? (
+      ) : visibleContactForm? (
+        <ContactForm />
+      ): showCart && !visibleAddItem && !visibleContactForm ? (
         <Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/> 
       ) : (
         <AddItems toggleAddItemPage={toggleAddItemPage}/>

@@ -99,7 +99,7 @@ function Cart({ cartItems, userName, toggleCartPage, updateCartItem, clearCartIt
               </svg>
             </div>
 
-            <div className="text">Clear Cart 🛒</div>
+            <div className="delete-items-button-text">Clear Cart 🛒</div>
           </button>
           }
         </div>

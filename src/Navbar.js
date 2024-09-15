@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction}) => {
+const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleContactFormFunction}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const handleSignInLoginForm = (event) => {
@@ -41,6 +41,10 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
     setVisibleItemFunction();
   }
 
+  const handleContactForm = () => {
+    setVisibleContactFormFunction();
+  }
+
   return (
     <div className="navbar-div">
       <img src='./images/logo-navbar.png' alt='Profile' className='restaurant-logo-navbar' />
@@ -64,6 +68,10 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
                 <button className="add-item-button" onClick={() => { handleAddItem(); toggleDropdown(); }}>
                   Add Item
                 </button>}
+
+                <button className="contact-button" onClick={ () => { handleContactForm(); toggleDropdown(); }}>
+                  Contact
+                </button>
 
                 <button className="logout-button" onClick={handleLogout}>
                   Logout
