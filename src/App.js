@@ -15,12 +15,25 @@ function App() {
   const [items, setItems] = useState([]);
   const [menuItems, setMenuItems] = useState(items);
 
+  // useEffect(() => {
+  //   fetch('https://react-restaurant-app-1.onrender.com/items') // URL of your backend server
+  //     .then(response => response.json())
+  //     .then(data => setItems(data))
+  //     .catch(error => console.error('Error fetching data:', error));  
+  // }, []);
+
   useEffect(() => {
-    fetch('http://localhost:5000/items') // URL of your backend server
-      .then(response => response.json())
+    fetch('https://react-restaurant-app-1.onrender.com/items')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
       .then(data => setItems(data))
-      .catch(error => console.error('Error fetching data:', error));
+      .catch(error => console.error('Error fetching data:', error));  
   }, []);
+  
 
   // console.log(items);
 

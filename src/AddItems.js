@@ -40,7 +40,7 @@ function AddItem({ toggleAddItemPage }) {
         if (!validateForm()) return;
 
         try {
-            const response = await fetch('http://localhost:5000/add-item', {
+            const response = await fetch('https://react-restaurant-app-1.onrender.com/add-item', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

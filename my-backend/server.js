@@ -3,7 +3,7 @@ const cors = require('cors');
 const { Pool } = require('pg'); // Import the pg module
 
 const app = express();
-app.use(cors());
+app.use(cors()); // Allow all origins
 app.use(express.json()); // To parse JSON bodies
 
 // Create a PostgreSQL connection pool
