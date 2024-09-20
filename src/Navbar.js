@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleContactFormFunction}) => {
+const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleEditItemFunction, setVisibleContactFormFunction}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const handleSignInLoginForm = (event) => {
@@ -41,6 +41,10 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
     setVisibleItemFunction();
   }
 
+  const handleEditItem = () => {
+    setVisibleEditItemFunction();
+  }
+
   const handleContactForm = () => {
     setVisibleContactFormFunction();
   }
@@ -64,10 +68,17 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
           {isDropdownVisible && (
             <div className="dropdown-menu">
               <div className='dropdown-menu-buttons'>
-                {accountTypeValue === 'admin' &&
-                <button className="add-item-button" onClick={() => { handleAddItem(); toggleDropdown(); }}>
-                  Add Item
-                </button>}
+                {accountTypeValue === 'admin' && (
+                  <>
+                    <button className="add-item-button" onClick={() => { handleAddItem(); toggleDropdown(); }}>
+                      Add Item
+                    </button>
+
+                    <button className="add-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
+                      Edit Item
+                    </button>
+                  </>
+                )}
 
                 <button className="contact-button" onClick={ () => { handleContactForm(); toggleDropdown(); }}>
                   Contact

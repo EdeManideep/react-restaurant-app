@@ -10,6 +10,7 @@ import AddItems from './AddItems'
 import ContactForm from './ContactForm';
 import PopupMessage from './PopupMessage';
 import BackToTop from './BackToTop';
+import UpdateItem from './UpdateItem'
 
 function App() {
   const [items, setItems] = useState([]);
@@ -166,17 +167,24 @@ function App() {
   }
 
   const [visibleAddItem, setVisibleItem] = useState(false);
-
   const setVisibleItemFunction = () =>{
     setVisibleItem(true);
+    setVisibleEditItem(false);
+    setVisibleContactForm(false);
+  }
+
+  const [visibleEditItem, setVisibleEditItem] = useState(false);
+  const setVisibleEditItemFunction = () =>{
+    setVisibleEditItem(true);
+    setVisibleItem(false);
     setVisibleContactForm(false);
   }
 
   const [visibleContactForm, setVisibleContactForm] = useState(false);
-
   const setVisibleContactFormFunction = () =>{
     setVisibleContactForm(true);
     setVisibleItem(false);
+    setVisibleEditItem(false);
   }
 
   const addToCart = (item) => {
@@ -216,6 +224,14 @@ function App() {
     setVisibleItem(prevVisibleAddItem => !prevVisibleAddItem);
   }
 
+  const toggleEditItemPage = () => {
+    setVisibleEditItem(prevVisibleEditItem => !prevVisibleEditItem);
+  }
+
+  const toggleContactFormPage = () => {
+    setVisibleContactForm(prevVisibleContactForm => !prevVisibleContactForm);
+  }
+  
   function updateCartItem(name, newQuantity) {
     let updatedCartItems;
   
@@ -261,6 +277,7 @@ function App() {
         handleUserDetailsRemoveLocalStorage={handleUserDetailsRemoveLocalStorage}
         flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
         setVisibleItemFunction={setVisibleItemFunction}
+        setVisibleEditItemFunction={setVisibleEditItemFunction}
         setVisibleContactFormFunction={setVisibleContactFormFunction}
       />
       
@@ -275,7 +292,7 @@ function App() {
         />
       )}
 
-      {!showCart && !visibleAddItem && !visibleContactForm ? (
+      {!showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm ? (
         <section className="menu section">
           <div className="title">
             <h2>our menu</h2>
@@ -333,7 +350,13 @@ function App() {
               </div>
             ) : (
               <div className='no-filter-items'>
-                  <h4>Loding <FontAwesomeIcon icon={faFaceFrown} /></h4>
+                <h4>
+                  <img src='./images/loading-icon.gif' alt='loading-icon'  className='loading-icon'/> 
+                  Preparing Database
+                  <br /><br />
+                  This may take a few seconds, please be patience
+                </h4>
+                <h4 className='nameDesign'>-Flavors of India</h4>
               </div>
             )}
           </div>
@@ -344,12 +367,14 @@ function App() {
             <img src="./images/cart-icon.png" alt="Cart Icon" />
           </div>
         </section>
-      ) : visibleContactForm? (
-        <ContactForm />
-      ): showCart && !visibleAddItem && !visibleContactForm ? (
+      ) : visibleContactForm ? (
+        <ContactForm toggleContactFormPage={toggleContactFormPage} />
+      ) : showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm ? (
         <Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/> 
+      ) : visibleEditItem ? (
+        <UpdateItem toggleEditItemPage={toggleEditItemPage} />
       ) : (
-        <AddItems toggleAddItemPage={toggleAddItemPage}/>
+        <AddItems toggleAddItemPage={toggleAddItemPage} />
       )}
     </main>
   );

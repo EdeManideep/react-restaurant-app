@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import emailjs from "emailjs-com";
 import './ContactForm.css';
 
-const Contact = () => {
+function Contact({ toggleContactFormPage }) {
   const form = useRef();
 
   const sendEmail = (e) => {
@@ -32,6 +32,15 @@ const Contact = () => {
     <div className="boby-contactForm">
         <form ref={form} onSubmit={sendEmail} className="contact-form">
         <h1 className="form-title">Contact</h1>
+        <button type="button" className="back-button" onClick={toggleContactFormPage}>
+            <div className="back-button-background">
+                <svg width="25px" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#000000" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
+                    <path fill="#000000" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path>
+                </svg>
+            </div>
+            <p className="back-button-text">Menu</p>
+        </button>
         <div className="input-container">
             <label>Name</label>
             <input type="text" name="from_name" required className="form-input" placeholder="Enter your name" />

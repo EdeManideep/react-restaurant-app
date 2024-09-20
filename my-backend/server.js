@@ -69,6 +69,30 @@ app.post('/add-item', async (req, res) => {
     }
 });
 
+
+// PUT route to update an item by ID
+app.put('/update-item/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, category, price, image, description, count_products_available } = req.body;
+
+    if (!name || !category || !price || !image || !description || !count_products_available || !id) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        const queryStr = `
+            UPDATE Items
+            SET name = $1, category = $2, price = $3, image = $4, description = $5, count_products_available = $6
+            WHERE id = $7`;
+        const values = [name, category, price, image, description, count_products_available, id];
+        await query(queryStr, values);
+        res.status(200).json({ message: 'Item updated successfully' });
+    } catch (err) {
+        console.error('Error updating item:', err);
+        res.status(500).json({ error: 'Failed to update item' });
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

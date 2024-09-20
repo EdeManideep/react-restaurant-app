@@ -59,7 +59,7 @@ const Filter = ({ allCategories, filterItem, updatesearchquery }) => {
           className='filter-input-text'
           value={inputValue}
           onChange={handleInputChange}
-          placeholder="Search for item"
+          placeholder="Search for item 🔍"
         />
       </div>
     </div>
