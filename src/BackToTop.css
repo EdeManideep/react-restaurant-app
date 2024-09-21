@@ -25,21 +25,22 @@
     fill: white;
 }
 
-.text {
-    font-size: 0.7em;
+.backToTop-text {
+    font-size: 0.8em;
     width: 100px;
     position: absolute;
     color: rgb(0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom: -35px;
-    right: -30px;
+    bottom: 15px;
+    right: 43px;
     opacity: 0;
     transition-duration: .7s;
+    font-weight: bolder;
 }
 
-.backToTop-Btn:hover .text {
+.backToTop-Btn:hover .backToTop-text {
     opacity: 1;
     transition-duration: .7s;
 }

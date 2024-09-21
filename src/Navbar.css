@@ -89,6 +89,19 @@
     margin-bottom: 5px;
   }
 
+  .edit-item-button{
+    background-color: #6df91c;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 5px;
+  }
+
   .contact-button{
     background-color: #48af42;
     color: white;

@@ -74,7 +74,7 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
                       Add Item
                     </button>
 
-                    <button className="add-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
+                    <button className="edit-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
                       Edit Item
                     </button>
                   </>

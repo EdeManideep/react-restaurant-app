@@ -16,13 +16,6 @@ function App() {
   const [items, setItems] = useState([]);
   const [menuItems, setMenuItems] = useState(items);
 
-  // useEffect(() => {
-  //   fetch('https://react-restaurant-app-1.onrender.com/items') // URL of your backend server
-  //     .then(response => response.json())
-  //     .then(data => setItems(data))
-  //     .catch(error => console.error('Error fetching data:', error));  
-  // }, []);
-
   useEffect(() => {
     fetch('https://react-restaurant-app-1.onrender.com/items')
       .then(response => {
@@ -262,7 +255,14 @@ function App() {
   const [popupMessageTop, setPopupMessageTop] = useState(''); 
   
   return (
-    <main>
+    <main style={{ 
+      backgroundImage: menuItems.length === 0 && searchQuery === '' ? 'url(./images/bg-loading-menu-items.png)' : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      height: '100vh',
+      width: '100%',
+      position: 'relative'
+    }}>
 
       {/* Popup message for updates */}
       <PopupMessage message={popupMessageTop} duration={1500} />
@@ -294,16 +294,18 @@ function App() {
 
       {!showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm ? (
         <section className="menu section">
-          <div className="title">
-            <h2>our menu</h2>
-            <div className="underline"></div>
-          </div>
-
-          <Filter 
-            allCategories={allCategories} 
-            filterItem={filterItem} 
-            updatesearchquery={updatesearchquery}
-          />
+          { (menuItems.length > 0  || searchQuery) &&
+            <div className="title">
+              <h2>Our Menu</h2>
+              <div className="underline"></div>
+            </div> }
+          
+          { (menuItems.length > 0  || searchQuery) &&
+            <Filter 
+              allCategories={allCategories} 
+              filterItem={filterItem} 
+              updatesearchquery={updatesearchquery}
+            /> }
 
           <div className='section-center'>
             {menuItems.length ? (
@@ -322,7 +324,7 @@ function App() {
 
                     <div className='item-info-center-algin'>
                       <p className='item-text'>{description}</p>
-                      <h5 style={{ color: 'red' }}>Available Items: {count_products_available}</h5>
+                      <h5 className='item-available-items'>Available Items: {count_products_available}</h5>
                       <div className='button-cart-price-item'>
 
                         <button onClick={() => {addToCart(menuItem); 
@@ -346,10 +348,14 @@ function App() {
               );
             })): menuItems.length  === 0 && searchQuery ? (
               <div className='no-filter-items'>
-                  <h4>No items found <FontAwesomeIcon icon={faFaceFrown} /></h4>
+                  <h4>
+                    No items found <FontAwesomeIcon icon={faFaceFrown} />
+                    <br /><br />
+                    Please try any other items
+                  </h4>
               </div>
             ) : (
-              <div className='no-filter-items'>
+              <div className='loading-the-page'>
                 <h4>
                   <img src='./images/loading-icon.gif' alt='loading-icon'  className='loading-icon'/> 
                   Preparing Database
@@ -361,11 +367,11 @@ function App() {
             )}
           </div>
 
-          {/* Cart Image Button */}
-          <div className="cart-icon-button"
-            onClick={toggleCartPage}>
-            <img src="./images/cart-icon.png" alt="Cart Icon" />
-          </div>
+          { menuItems.length > 0 &&
+            <div className="cart-icon-button" onClick={toggleCartPage}>
+              <img src="./images/cart-icon.png" alt="Cart Icon" />
+              <p className="goToCart-text">Go To Cart ⮞</p> {/* Moved inside the div */}
+            </div> }
         </section>
       ) : visibleContactForm ? (
         <ContactForm toggleContactFormPage={toggleContactFormPage} />
