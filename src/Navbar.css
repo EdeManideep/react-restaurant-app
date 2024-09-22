@@ -9,6 +9,7 @@
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out; /* Add transition for smooth effect */
+    height: 60px;
   }
   
   .navbar-loginsignup-button {
@@ -29,17 +30,29 @@
   .profile-button {
     background-color: #6754d2;
     color: rgb(255, 255, 255);
-    padding: 10px 20px;
+    padding: 10px 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: fit-content;
   }
   
   .profile-button:hover {
     background-color: #503d99;
+  }
+
+  .profile-button:after {
+    content: '▼';
+    margin-left: 8px;
+    font-size: 12px;
+    color: white;
   }
   
   .profile-container {
@@ -56,6 +69,7 @@
   .restaurant-logo-navbar{
     width: 20%;
     margin-right: 1042px;
+    height: 90%;
   }
   
   .dropdown-menu {
@@ -76,74 +90,102 @@
     flex-direction: column;
   }
 
-  .add-item-button{
+  .add-item-button {
     background-color: #46d27c;
     color: white;
     border: none;
     padding: 8px 10px;
-    width: 100px;
+    width: 113px;
     text-align: center;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for hover effect */
     margin-bottom: 5px;
-  }
+}
 
-  .edit-item-button{
+.add-item-button:hover {
+    background-color: #3bbf6b; /* Darker green for hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+.edit-item-button {
     background-color: #6df91c;
     color: white;
     border: none;
     padding: 8px 10px;
-    width: 100px;
+    width: 113px;
     text-align: center;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     margin-bottom: 5px;
-  }
+}
 
-  .contact-button{
+.edit-item-button:hover {
+    background-color: #5ee018; /* Darker green for hover */
+    transform: scale(1.05);
+}
+
+.delete-item-button {
+    background-color: #db1e1e;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    width: 113px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.delete-item-button:hover {
+    background-color: #c91717; /* Darker red for hover */
+    transform: scale(1.05);
+}
+
+.contact-button {
     background-color: #48af42;
     color: white;
     border: none;
     padding: 8px 10px;
-    width: 100px;
+    width: 113px;
     text-align: center;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     margin-bottom: 5px;
-  }
+}
+
+.contact-button:hover {
+    background-color: #3c9b38; /* Darker green for hover */
+    transform: scale(1.05);
+}
   
   .logout-button {
     background-color: #797ae1;
     color: white;
     border: none;
     padding: 8px 10px;
-    width: 100px;
+    width: 113px;
     text-align: center;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   }
   
   .logout-button:hover {
-    background-color: #6d4bd3;
-  }
+    background-color: #6d4bd3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight scale effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+}
+
+/* Optional: Active state for when the button is clicked */
+.logout-button:active {
+    transform: scale(1); /* Reset scale to normal size on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow */
+}
   
   .dropdown-menu .logout-button {
     border-bottom: 2px solid #6658ca;
-  }
-  
-  .profile-button:after {
-    content: '▼';
-    margin-left: 8px;
-    font-size: 12px;
-    color: white;
-  }
-  
-  .profile-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }

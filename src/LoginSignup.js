@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './LoginSignup.css';
 import emailjs from "emailjs-com";
+import Loading from './Loading';
 
 const API_URL = 'https://sheetdb.io/api/v1/g2oqzfvt4r6au';
 
@@ -46,6 +47,9 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
   const [emailVerified, setEmailVerified] = useState(false);
   const [loginType, setLoginType] = useState('user');
   const adminMails = ['manideepede9@gmail.com'];
+  const [showEyePasswordIcon, setShowEyePasswordIcon] = useState(true);
+  const [showEyeConfirmPasswordIcon, setShowConfirmEyePasswordIcon] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const form = useRef();
   useEffect(() => {
@@ -59,8 +63,8 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
         confirmPassword: '',
       });
       setIsLogin(savedData.isLogin);
-      hideLoginButtonfunc(isLogin); // Hide the login button if user is already logged in
-      closeModal(false); // Close the modal immediately if the user is logged in
+      hideLoginButtonfunc(isLogin);
+      closeModal(false);
     }
   }, [hideLoginButtonfunc, closeModal, isLogin]);
 
@@ -202,15 +206,16 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!handleValidationMessages()) {
       return;
     }
-
+    
     if (!isLogin && formData.otp !== generatedOTP) {
       setErrors({ ...errors, otp: 'Invalid OTP!' });
       return;
     }
+    setLoading(true);
 
     if (!isLogin) {
       const data = {
@@ -226,6 +231,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
       } catch (error) {
         setErrors({ ...errors, form: 'Failed to sign up. Please try again.' });
       }
+      setLoading(false);
     } else {
       try {
         const response = await axios.get(API_URL);
@@ -244,6 +250,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
           closeModal(false);
         } else {
           setErrors({ ...errors, form: 'Invalid email or password!' });
+          setLoading(false);
         }
       } catch (error) {
         setErrors({ ...errors, form: 'Failed to log in. Please try again.' });
@@ -260,6 +267,14 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
     } else {
       loginTypeUserFunction();
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowEyePasswordIcon(!showEyePasswordIcon);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmEyePasswordIcon(!showEyeConfirmPasswordIcon);
   };
 
   return (
@@ -334,9 +349,10 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
               <div className="form-group">
                 <label htmlFor="otp">OTP</label>
                 <input
-                  type="text"
+                  type="password"
                   id="otp"
                   placeholder="Enter the OTP"
+                  maxLength={4}
                   value={formData.otp}
                   onChange={handleInputChange}
                 />
@@ -345,25 +361,50 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
             )}
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
+              <div className='password-input-wrapper'>
+                <input
+                  type={showEyePasswordIcon ? "password" : "text"}
+                  id="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="password-input" />
+
+                {formData.password &&
+                  <span className="toggle-password-icon" onClick={togglePasswordVisibility}>
+                    {showEyePasswordIcon ? (
+                      <img src="./images/open-eye-icon.png" alt="Show Password" className="password-icon" />
+                    ) : (
+                      <img src="./images/hidden-eye-icon.png" alt="Hide Password" className="password-icon" />
+                    )}
+                  </span>
+                }
+              </div>
+
               {errors.password && <p className="error-text">{errors.password}</p>}
             </div>
             {!isLogin && (
               <div className="form-group">
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                />
+                <div className='password-input-wrapper'>
+                  <input
+                    type={showEyeConfirmPasswordIcon ? 'password' : 'text'}
+                    id="confirmPassword"
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className="password-input" />
+                  
+                  {formData.confirmPassword &&
+                    <span className="toggle-password-icon" onClick={toggleConfirmPasswordVisibility}>
+                      {showEyePasswordIcon ? (
+                        <img src="./images/open-eye-icon.png" alt="Show Password" className="password-icon" />
+                      ) : (
+                        <img src="./images/hidden-eye-icon.png" alt="Hide Password" className="password-icon" />
+                      )}
+                    </span>
+                  }
+                </div>
                 {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
               </div>
             )}
@@ -376,6 +417,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
           <button onClick={toggleForm} className="toggle-btn">
             {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
           </button>
+      {loading && <Loading text="Verifying Credentials" />}
         </div>
       </div>
       {showPopup && <Popup closePopup={closePopup} />}

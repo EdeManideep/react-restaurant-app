@@ -127,6 +127,9 @@ function App() {
     setAccountType('');
     setCartItems([]);
     setHideLoginButton(false);
+    setVisibleItem(false);
+    setVisibleEditItem(false);
+    setVisibleContactForm(false);
   };  
 
   const hideLoginButtonfunc = (value) => {
@@ -256,7 +259,7 @@ function App() {
   
   return (
     <main style={{ 
-      backgroundImage: menuItems.length === 0 && searchQuery === '' ? 'url(./images/bg-loading-menu-items.png)' : 'none',
+      backgroundImage: menuItems.length === 0 && searchQuery === '' ? 'url(./images/bg-loading-menu-items.jpg)' : 'none',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       height: '100vh',

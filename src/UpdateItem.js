@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UpdateItem.css';
 import PopupMessage from './PopupMessage';
+import Loading from './Loading';
 
 function EditItem({ toggleEditItemPage }) {
   const [items, setItems] = useState([]);
@@ -55,9 +56,10 @@ function EditItem({ toggleEditItemPage }) {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const [popupMessageTop, setPopupMessageTop] = useState(''); 
-
+  const [popupMessageTop, setPopupMessageTop] = useState('');
+  
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -73,6 +75,7 @@ function EditItem({ toggleEditItemPage }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!selectedItem) {
       setPopupMessageTop('');
@@ -213,6 +216,7 @@ function EditItem({ toggleEditItemPage }) {
           {errors.count_products_available && <p className="error-message">{errors.count_products_available}</p>}
 
           <button type="submit" className="submit-button-update-item">Update Item</button>
+          {loading && <Loading text="Submitting..." />}
         </form>
       )}
     </div>

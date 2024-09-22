@@ -77,11 +77,15 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
                     <button className="edit-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
                       Edit Item
                     </button>
+
+                    <button className="delete-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
+                      Delete Item
+                    </button>
                   </>
                 )}
 
                 <button className="contact-button" onClick={ () => { handleContactForm(); toggleDropdown(); }}>
-                  Contact
+                  Contact Us
                 </button>
 
                 <button className="logout-button" onClick={handleLogout}>

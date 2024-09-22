@@ -1,12 +1,42 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import emailjs from "emailjs-com";
 import './ContactForm.css';
+import PopupMessage from './PopupMessage';
 
 function Contact({ toggleContactFormPage }) {
   const form = useRef();
+  const [popupMessageTop, setPopupMessageTop] = useState('');
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' });
+
+  const validateForm = () => {
+    const name = form.current.from_name.value.trim();
+    const email = form.current.from_email.value.trim();
+    const message = form.current.message.value.trim();
+    const newErrors = { name: '', email: '', message: '' };
+
+    if (!name) {
+      newErrors.name = 'Name is required';
+    }
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
+      newErrors.email = 'Invalid email format';
+    }
+    if (!message) {
+      newErrors.message = 'Message is required';
+    }
+
+    setErrors(newErrors);
+
+    return !newErrors.name && !newErrors.email && !newErrors.message;
+  };
 
   const sendEmail = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     emailjs
       .sendForm(
@@ -18,51 +48,74 @@ function Contact({ toggleContactFormPage }) {
       .then(
         (result) => {
           console.log(result.text);
-          alert("Message sent successfully");
+          setPopupMessageTop('');
+          setTimeout(() => setPopupMessageTop(`Mail sent successfully`), 0);
           form.current.reset();
+          setErrors({ name: '', email: '', message: '' });
         },
         (error) => {
           console.log(error.text);
-          alert("Error sending message, please try again later.");
+          setPopupMessageTop('');
+          setTimeout(() => setPopupMessageTop(`Error sending mail, please try again later`), 0);
         }
       );
   };
 
   return (
     <div className="boby-contactForm">
-        <form ref={form} onSubmit={sendEmail} className="contact-form">
-        <h1 className="form-title">Contact</h1>
-        <button type="button" className="back-button" onClick={toggleContactFormPage}>
-            <div className="back-button-background">
-                <svg width="25px" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#000000" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
-                    <path fill="#000000" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path>
-                </svg>
-            </div>
-            <p className="back-button-text">Menu</p>
+      <PopupMessage message={popupMessageTop} duration={1500} />
+
+      <form ref={form} onSubmit={sendEmail} className="contact-form">
+      <div className="back-icon-contact-form-div">
+        <button type="button" className="back-icon-contact-form-btn" onClick={toggleContactFormPage}>
+            <img src="./images/back-icon-contact-form.png" alt="back-icon-contact-form" />
         </button>
-        <div className="input-container">
+        <p>Menu</p>
+      </div>
+
+        <h1 className="form-title">Contact Us</h1>
+
+        <div className="input-container-div">
+          <div className="input-container">
             <label>Name</label>
-            <input type="text" name="from_name" required className="form-input" placeholder="Enter your name" />
-        </div>
+            <input
+              type="text"
+              name="from_name"
+              className="form-input"
+              placeholder="Enter your name"
+            />
+            {errors.name && <p className="error-message">{errors.name}</p>}
+          </div>
 
-        <div className="input-container">
+          <div className="input-container">
             <label>Email</label>
-            <input type="email" name="from_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="form-input" placeholder="Enter your Email / Gmail" />
-        </div>
+            <input
+              type="email"
+              name="from_email"
+              className="form-input"
+              placeholder="Enter your Email / Gmail"
+            />
+            {errors.email && <p className="error-message">{errors.email}</p>}
+          </div>
 
-        <div className="input-container">
+          <div className="input-container">
             <label>Message</label>
-            <textarea name="message" required className="form-message" placeholder="Type your message...." />
+            <textarea
+              name="message"
+              className="form-message"
+              placeholder="Type your message..."
+            />
+            {errors.message && <p className="error-message">{errors.message}</p>}
+          </div>
         </div>
 
-        <div className="submit-btn">
-            <button type="submit">
-                <p>Send</p>
-                <span className="submit-icon">✉️</span>
-            </button>
+        <div className="submit-btn-contact">
+          <button type="submit">
+            <p>Send</p>
+            <span className="submit-icon">✉️</span>
+          </button>
         </div>
-        </form>
+      </form>
     </div>
   );
 };

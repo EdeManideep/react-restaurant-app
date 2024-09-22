@@ -276,10 +276,38 @@
   left: calc(100% - 35px + 10px);
 }
 
-
-
 .toggle-button-div{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.password-input {
+  width: 100%;
+  padding-right: 40px;
+  padding-left: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: 10px;
+  top: 20%;
+  cursor: pointer;
+}
+
+.password-icon {
+  width: 20px;
+  height: 20px;
 }

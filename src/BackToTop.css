@@ -1,7 +1,7 @@
 .backToTop {
     position: fixed; 
     right: 25px;
-    bottom: 120px;
+    bottom: 110px;
     height: 30px;
     font-size: 3rem;
     z-index: 999;

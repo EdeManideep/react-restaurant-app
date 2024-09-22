@@ -245,6 +245,7 @@ Menu
 }
 
 .item-available-items{
+  margin: 3px 0;
   color: red;
 }
 
@@ -252,7 +253,7 @@ Menu
   margin-bottom: 0;
   color: #777;
   line-height: 1.5;
-  flex-grow: 1; /* Ensure it takes up remaining space */
+  flex-grow: 1;
 }
 
 .item-info-center-algin {
@@ -284,13 +285,16 @@ Menu
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 480px;
-  width: 83vw;
-  margin: 0 auto;
+  height: 130px;
+  width: 530px;
+  margin: 190px 260px;
   max-width: 1111px;
   padding: 2rem;
   text-align: center;
   font-weight: bold;
+  padding-top: 48px;
+  border-radius: 10px;
+  background-color: rgba(0, 255, 255, 0.7);
 }
 
 .loading-icon {
@@ -320,6 +324,7 @@ Menu
   box-shadow: var(--light-shadow);
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
   padding: 10px;
+  margin-top: 5px;
 }
 
 .button-cart-price-item:hover {

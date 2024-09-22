@@ -1,0 +1,16 @@
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.loading-gif {
+    width: 30px; /* Adjust size as needed */
+    height: 30px; /* Adjust size as needed */
+    margin-right: 10px;
+}
+
+.loading-text {
+    font-size: 1rem; /* Adjust text size as needed */
+}

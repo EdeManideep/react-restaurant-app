@@ -9,7 +9,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-evenly;
-    width: 400px;
+    width: 600px;
     padding: 2rem;
     background-color: #fff2cc;
     border-radius: 20px;
@@ -21,12 +21,20 @@
     font-size: 2.5rem;
     color: #f9a825;
     margin-bottom: 2rem;
-    text-align: center; /* Center the title */
+    text-align: center;
+    width: 100%;
+}
+
+.input-container-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
 }
 
 .input-container {
-    width: 100%;
+    width: 80%;
     margin-bottom: 1.5rem;
     position: relative;
 }
@@ -67,6 +75,8 @@
 
 .form-input {
     height: 50px;
+    padding-top: 20px;
+    padding-bottom: 15px;
 }
 
 .form-message {
@@ -74,10 +84,53 @@
     resize: none;
 }
 
-.submit-btn {
+.back-icon-contact-form-btn {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #f9a825;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    border: none;
+}
+
+.back-icon-contact-form-btn img {
+    height: 20px;
+    width: 20px;
+    transition: transform 0.3s ease;
+}
+
+.back-icon-contact-form-btn:hover img {
+    transform: scale(1.2);
+}
+
+.back-icon-contact-form-div {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.back-icon-contact-form-div p {
+    margin: 0;
+    padding-left: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    font-weight: bold;
+    color: #333;
+}
+
+.back-icon-contact-form-div:hover p {
+    opacity: 1;
+}
+
+.submit-btn-contact {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     height: 45px;
 }
 
@@ -85,7 +138,7 @@ p{
     margin-bottom : 0px;
 }
 
-.submit-btn button {
+.submit-btn-contact button {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -100,7 +153,7 @@ p{
     transition: background-color 0.3s ease;
 }
 
-.submit-btn button:hover {
+.submit-btn-contact button:hover {
     background-color: #a6670e;
 }
 
@@ -111,7 +164,7 @@ p{
     transition: transform 0.3s ease;
 }
 
-.submit-btn button:hover .submit-icon {
+.submit-btn-contact button:hover .submit-icon {
     animation: fly 1s ease-in-out;
 }
 
@@ -134,7 +187,7 @@ p{
         font-size: 2rem;
     }
 
-    .submit-btn button {
+    .submit-btn-contact button {
         padding: 0.5rem 1.25rem;
         font-size: 0.9rem;
     }
@@ -150,7 +203,7 @@ p{
         font-size: 1.75rem;
     }
 
-    .submit-btn button {
+    .submit-btn-contact button {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
     }
