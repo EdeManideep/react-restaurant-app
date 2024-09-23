@@ -11,6 +11,7 @@ import ContactForm from './ContactForm';
 import PopupMessage from './PopupMessage';
 import BackToTop from './BackToTop';
 import UpdateItem from './UpdateItem'
+import DeleteItem from './DeleteItem';
 
 function App() {
   const [items, setItems] = useState([]);
@@ -129,6 +130,7 @@ function App() {
     setHideLoginButton(false);
     setVisibleItem(false);
     setVisibleEditItem(false);
+    setVisibleDeleteItem(false);
     setVisibleContactForm(false);
   };  
 
@@ -167,11 +169,21 @@ function App() {
     setVisibleItem(true);
     setVisibleEditItem(false);
     setVisibleContactForm(false);
+    setVisibleDeleteItem(false);
   }
 
   const [visibleEditItem, setVisibleEditItem] = useState(false);
   const setVisibleEditItemFunction = () =>{
     setVisibleEditItem(true);
+    setVisibleItem(false);
+    setVisibleContactForm(false);
+    setVisibleDeleteItem(false);
+  }
+
+  const [visibleDeleteItem, setVisibleDeleteItem] = useState(false);
+  const setVisibleDeleteItemFunction = () =>{
+    setVisibleDeleteItem(true);
+    setVisibleEditItem(false);
     setVisibleItem(false);
     setVisibleContactForm(false);
   }
@@ -181,6 +193,7 @@ function App() {
     setVisibleContactForm(true);
     setVisibleItem(false);
     setVisibleEditItem(false);
+    setVisibleDeleteItem(false);
   }
 
   const addToCart = (item) => {
@@ -222,6 +235,10 @@ function App() {
 
   const toggleEditItemPage = () => {
     setVisibleEditItem(prevVisibleEditItem => !prevVisibleEditItem);
+  }
+
+  const toggleDeleteItemPage = () => {
+    setVisibleItem(prevVisibleDeleteItem => !prevVisibleDeleteItem);
   }
 
   const toggleContactFormPage = () => {
@@ -281,6 +298,7 @@ function App() {
         flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
         setVisibleItemFunction={setVisibleItemFunction}
         setVisibleEditItemFunction={setVisibleEditItemFunction}
+        setVisibleDeleteItemFunction={setVisibleDeleteItemFunction}
         setVisibleContactFormFunction={setVisibleContactFormFunction}
       />
       
@@ -295,7 +313,7 @@ function App() {
         />
       )}
 
-      {!showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm ? (
+      {!showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm && !visibleDeleteItem ? (
         <section className="menu section">
           { (menuItems.length > 0  || searchQuery) &&
             <div className="title">
@@ -378,10 +396,12 @@ function App() {
         </section>
       ) : visibleContactForm ? (
         <ContactForm toggleContactFormPage={toggleContactFormPage} />
-      ) : showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm ? (
+      ) : showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm && !visibleDeleteItem ? (
         <Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/> 
       ) : visibleEditItem ? (
         <UpdateItem toggleEditItemPage={toggleEditItemPage} />
+      ) : visibleDeleteItem ? (
+        <DeleteItem toggleDeleteItemPage={toggleDeleteItemPage} />
       ) : (
         <AddItems toggleAddItemPage={toggleAddItemPage} />
       )}

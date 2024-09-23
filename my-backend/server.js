@@ -93,6 +93,20 @@ app.put('/update-item/:id', async (req, res) => {
     }
 });
 
+// Route to delete an item by ID
+app.delete('/delete-item/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const queryStr = 'DELETE FROM Items WHERE id = $1';
+        await query(queryStr, [id]);
+        res.status(200).json({ message: 'Item deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        res.status(500).json({ error: 'Failed to delete item' });
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

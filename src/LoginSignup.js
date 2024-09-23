@@ -261,6 +261,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
   const [isAdmin, setIsAdmin] = useState(false); // Toggle state for admin/user
 
   const handleToggleChange = (e) => {
+    setLoading(false);
     setIsAdmin(e.target.checked);
     if (e.target.checked) {
       loginTypeAdminFunction();

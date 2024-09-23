@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleEditItemFunction, setVisibleContactFormFunction}) => {
+const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleEditItemFunction, setVisibleDeleteItemFunction, setVisibleContactFormFunction}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const handleSignInLoginForm = (event) => {
@@ -45,6 +45,10 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
     setVisibleEditItemFunction();
   }
 
+  const handleDeleteItem = () => {
+    setVisibleDeleteItemFunction();
+  }
+
   const handleContactForm = () => {
     setVisibleContactFormFunction();
   }
@@ -78,7 +82,7 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
                       Edit Item
                     </button>
 
-                    <button className="delete-item-button" onClick={() => { handleEditItem(); toggleDropdown(); }}>
+                    <button className="delete-item-button" onClick={() => { handleDeleteItem(); toggleDropdown(); }}>
                       Delete Item
                     </button>
                   </>
