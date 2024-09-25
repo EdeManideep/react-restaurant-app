@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown } from '@fortawesome/free-regular-svg-icons';
 import './Cart.css';
-import PopupMessage from './PopupMessage'; // Import the new PopupMessage component
+import PopupMessage from './PopupMessage';
+import { useNavigate } from  'react-router-dom';
 
-function Cart({ cartItems, userName, toggleCartPage, updateCartItem, clearCartItems }) {
+function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
   const [selectedValues, setSelectedValues] = useState({});
-  const [popupMessageTop, setPopupMessageTop] = useState(''); // State for pop-up messages
+  const [popupMessageTop, setPopupMessageTop] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [flagDisplayClearButton, setFlagDisplayClearButton] = useState(false);
-  const [showCheckoutOptions, setShowCheckoutOptions] = useState(false); // New state for checkout options
+  const [showCheckoutOptions, setShowCheckoutOptions] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleCartPage = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     if (cartItems.length === 0) {

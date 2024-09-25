@@ -3,6 +3,7 @@ import axios from 'axios';
 import './LoginSignup.css';
 import emailjs from "emailjs-com";
 import Loading from './Loading';
+import { useNavigate } from  'react-router-dom';
 
 const API_URL = 'https://sheetdb.io/api/v1/g2oqzfvt4r6au';
 
@@ -26,7 +27,9 @@ const Popup = ({ closePopup }) => {
   );
 };
 
-const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, gettingUserId, gettingAccountType, flagRemoveItemsInLoginSignupValue}) => {
+const LoginSignup = ({ hideLoginButtonfunc, gettingUserName, gettingUserId, gettingAccountType, flagRemoveItemsInLoginSignupValue}) => {
+
+  const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -64,9 +67,9 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
       });
       setIsLogin(savedData.isLogin);
       hideLoginButtonfunc(isLogin);
-      closeModal(false);
+      navigate('/');
     }
-  }, [hideLoginButtonfunc, closeModal, isLogin]);
+  }, [hideLoginButtonfunc, navigate, isLogin]);
 
   if(flagRemoveItemsInLoginSignupValue){
     localStorage.removeItem('loginData');
@@ -189,7 +192,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
   };
 
   const closingtheloginform=()=>{
-    closeModal(false);
+    navigate('/');
   }
 
   const closePopup = () => {
@@ -247,7 +250,7 @@ const LoginSignup = ({ closeModal, hideLoginButtonfunc, gettingUserName, getting
           gettingAccountType(user.account_type);
           localStorage.setItem('loginData', JSON.stringify({user_id : user.user_id, name : user.user_name, email : user.user_email, password : user.user_password, isLogin }));
           hideLoginButtonfunc(isLogin);
-          closeModal(false);
+          navigate('/');
         } else {
           setErrors({ ...errors, form: 'Invalid email or password!' });
           setLoading(false);

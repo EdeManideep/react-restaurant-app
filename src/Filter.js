@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Filter.css'; // Ensure to import the CSS file
+import './Filter.css';
 import Marquee from "react-fast-marquee";
 
 const Filter = ({ allCategories, filterItem, updatesearchquery }) => {

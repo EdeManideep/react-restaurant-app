@@ -1,51 +1,50 @@
-.delete-item-container {
+.delete-item-page {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 20px auto;
+    height: 100vh;
 }
 
-.delete-item-title {
-    font-size: 1.5rem;
+.delete-item-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+.delete-item-header {
+    font-size: 1.8rem;
     margin-bottom: 20px;
     color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.search-input {
+.delete-item-select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 1rem;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.item-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: #fff;
-}
-
-.delete-button {
-    padding: 10px 20px;
+.delete-item-btn {
+    padding: 12px 25px;
     background-color: #ff4d4d;
-    color: #fff;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.delete-button:hover {
-    background-color: #ff1a1a;
+.delete-item-btn:hover {
+    background-color: #e60000;
 }

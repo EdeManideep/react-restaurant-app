@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import emailjs from "emailjs-com";
 import './ContactForm.css';
 import PopupMessage from './PopupMessage';
+import { useNavigate } from  'react-router-dom';
 
-function Contact({ toggleContactFormPage }) {
+function Contact() {
+  const navigate = useNavigate();
   const form = useRef();
   const [popupMessageTop, setPopupMessageTop] = useState('');
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
@@ -67,7 +69,7 @@ function Contact({ toggleContactFormPage }) {
 
       <form ref={form} onSubmit={sendEmail} className="contact-form">
       <div className="back-icon-contact-form-div">
-        <button type="button" className="back-icon-contact-form-btn" onClick={toggleContactFormPage}>
+        <button type="button" className="back-icon-contact-form-btn" onClick={ () => navigate('/') }>
             <img src="./images/back-icon-contact-form.png" alt="back-icon-contact-form" />
         </button>
         <p>Menu</p>

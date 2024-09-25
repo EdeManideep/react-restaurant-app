@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import './Navbar.css';
+import { useNavigate } from  'react-router-dom';
 
-const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction, setVisibleItemFunction, setVisibleEditItemFunction, setVisibleDeleteItemFunction, setVisibleContactFormFunction}) => {
+const Navbar = ({ hideLoginButtonValue, userNameValue, accountTypeValue, handleUserDetailsRemoveLocalStorage, flagRemoveItemsInLoginSignupFunction }) => {
+
+  const navigate = useNavigate();
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const handleSignInLoginForm = (event) => {
     event.preventDefault();
-    handlesetHideLoginForm(true);
+    navigate('/loginsignup');
   };
 
   const toggleDropdown = () => {
@@ -14,9 +18,10 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
   };
 
   const handleLogout = () => {
-    setIsDropdownVisible(false); // Hide dropdown after logout
-    handleUserDetailsRemoveLocalStorage(); // Remove user details from localStorage
-    flagRemoveItemsInLoginSignupFunction(true); // Trigger any additional actions on logout
+    setIsDropdownVisible(false);
+    handleUserDetailsRemoveLocalStorage();
+    flagRemoveItemsInLoginSignupFunction(true);
+    navigate('/loginsignup');
   };
 
   let lastScrollTop = 0;
@@ -38,19 +43,19 @@ const Navbar = ({handlesetHideLoginForm, hideLoginButtonValue, userNameValue, ac
   });
 
   const handleAddItem = () => {
-    setVisibleItemFunction();
+    navigate('/addItem');
   }
 
   const handleEditItem = () => {
-    setVisibleEditItemFunction();
+    navigate('/updateItem');
   }
 
   const handleDeleteItem = () => {
-    setVisibleDeleteItemFunction();
+    navigate('/deleteItem');
   }
 
   const handleContactForm = () => {
-    setVisibleContactFormFunction();
+    navigate('/contact');
   }
 
   return (

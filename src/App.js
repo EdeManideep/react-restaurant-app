@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown } from '@fortawesome/free-regular-svg-icons';
+  import { Routes, Route, useNavigate } from  'react-router-dom';
 // import items from './data';
 import Filter from './Filter';
 import LoginSignup from './LoginSignup';
@@ -16,6 +17,7 @@ import DeleteItem from './DeleteItem';
 function App() {
   const [items, setItems] = useState([]);
   const [menuItems, setMenuItems] = useState(items);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('https://react-restaurant-app-1.onrender.com/items')
@@ -44,7 +46,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [flagRemoveItemsInLoginSignup, setFlagRemoveItemsInLoginSignup] = useState(false);
 
-  const [hideLoginForm, setHideLoginForm] = useState(false);
   const [hideLoginButton, setHideLoginButton] = useState(() => {
     return JSON.parse(localStorage.getItem('hideLoginButton')) || false;
   });
@@ -71,8 +72,6 @@ function App() {
     setCartItems(storedCartItems);
   }, [userId]); // Re-run effect whenever userId changes
   
-  const [showCart, setShowCart] = useState(false);  // State to show/hide Cart
-
   useEffect(() => {
     localStorage.setItem(`cartItems${userId}`, JSON.stringify(cartItems));
   }, [userId, cartItems]);
@@ -122,16 +121,12 @@ function App() {
     localStorage.removeItem('userName');
     localStorage.removeItem('userId');
     localStorage.removeItem('accountType');
-    setHideLoginForm(true);
+    // setHideLoginForm(true);
     setUserName('');
     setUserId('');
     setAccountType('');
     setCartItems([]);
     setHideLoginButton(false);
-    setVisibleItem(false);
-    setVisibleEditItem(false);
-    setVisibleDeleteItem(false);
-    setVisibleContactForm(false);
   };  
 
   const hideLoginButtonfunc = (value) => {
@@ -139,7 +134,7 @@ function App() {
   };
 
   const closeModal = (value) => {
-    setHideLoginForm(value);
+    // setHideLoginForm(value);
   }
 
   const gettingUserName = (value) => {
@@ -156,44 +151,8 @@ function App() {
     setAccountType(value);
   }
 
-  const setHideLoginFormfunc = (value) => {
-    setHideLoginForm(value);
-  }
-
   const flagRemoveItemsInLoginSignupFunction = (value) => {
     setFlagRemoveItemsInLoginSignup(value);
-  }
-
-  const [visibleAddItem, setVisibleItem] = useState(false);
-  const setVisibleItemFunction = () =>{
-    setVisibleItem(true);
-    setVisibleEditItem(false);
-    setVisibleContactForm(false);
-    setVisibleDeleteItem(false);
-  }
-
-  const [visibleEditItem, setVisibleEditItem] = useState(false);
-  const setVisibleEditItemFunction = () =>{
-    setVisibleEditItem(true);
-    setVisibleItem(false);
-    setVisibleContactForm(false);
-    setVisibleDeleteItem(false);
-  }
-
-  const [visibleDeleteItem, setVisibleDeleteItem] = useState(false);
-  const setVisibleDeleteItemFunction = () =>{
-    setVisibleDeleteItem(true);
-    setVisibleEditItem(false);
-    setVisibleItem(false);
-    setVisibleContactForm(false);
-  }
-
-  const [visibleContactForm, setVisibleContactForm] = useState(false);
-  const setVisibleContactFormFunction = () =>{
-    setVisibleContactForm(true);
-    setVisibleItem(false);
-    setVisibleEditItem(false);
-    setVisibleDeleteItem(false);
   }
 
   const addToCart = (item) => {
@@ -221,29 +180,15 @@ function App() {
         }
       });
     } else {
-      setHideLoginForm(true);  // Show login form if user is not logged in
+      navigate('/loginsignup');
+      setPopupMessageTop(''); // Clear the message temporarily
+      setTimeout(() => setPopupMessageTop(`Login To Add Items Into The Cart`), 0);
     }
   };  
 
   const toggleCartPage = () => {
-    setShowCart((prevShowCart) => !prevShowCart);
+    navigate('/cart');
   };
-
-  const toggleAddItemPage = () => {
-    setVisibleItem(prevVisibleAddItem => !prevVisibleAddItem);
-  }
-
-  const toggleEditItemPage = () => {
-    setVisibleEditItem(prevVisibleEditItem => !prevVisibleEditItem);
-  }
-
-  const toggleDeleteItemPage = () => {
-    setVisibleItem(prevVisibleDeleteItem => !prevVisibleDeleteItem);
-  }
-
-  const toggleContactFormPage = () => {
-    setVisibleContactForm(prevVisibleContactForm => !prevVisibleContactForm);
-  }
   
   function updateCartItem(name, newQuantity) {
     let updatedCartItems;
@@ -272,7 +217,7 @@ function App() {
     localStorage.removeItem(`cartItems${userId}`);
   }
 
-  const [popupMessageTop, setPopupMessageTop] = useState(''); 
+  const [popupMessageTop, setPopupMessageTop] = useState('');
   
   return (
     <main style={{ 
@@ -284,36 +229,21 @@ function App() {
       position: 'relative'
     }}>
 
-      {/* Popup message for updates */}
-      <PopupMessage message={popupMessageTop} duration={1500} />
-      <BackToTop />
-
-      <Navbar 
-        handlesetHideLoginForm={setHideLoginFormfunc} 
+  { (menuItems.length > 0  || searchQuery) &&
+    <Navbar 
         hideLoginButtonValue={hideLoginButton}
         userIdValue={userId}
         userNameValue={userName}
         accountTypeValue={accountType}
         handleUserDetailsRemoveLocalStorage={handleUserDetailsRemoveLocalStorage}
         flagRemoveItemsInLoginSignupFunction={flagRemoveItemsInLoginSignupFunction}
-        setVisibleItemFunction={setVisibleItemFunction}
-        setVisibleEditItemFunction={setVisibleEditItemFunction}
-        setVisibleDeleteItemFunction={setVisibleDeleteItemFunction}
-        setVisibleContactFormFunction={setVisibleContactFormFunction}
-      />
-      
-      {hideLoginForm && (
-        <LoginSignup 
-          closeModal={closeModal} 
-          hideLoginButtonfunc={hideLoginButtonfunc}
-          gettingUserName={gettingUserName}
-          gettingUserId={gettingUserId}
-          gettingAccountType={gettingAccountType}
-          flagRemoveItemsInLoginSignupValue={flagRemoveItemsInLoginSignup}
-        />
-      )}
+      /> }
 
-      {!showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm && !visibleDeleteItem ? (
+    <PopupMessage message={popupMessageTop} duration={1500} />
+    <BackToTop />
+    
+    <Routes>
+      <Route path='/' element={
         <section className="menu section">
           { (menuItems.length > 0  || searchQuery) &&
             <div className="title">
@@ -393,18 +323,26 @@ function App() {
               <img src="./images/cart-icon.png" alt="Cart Icon" />
               <p className="goToCart-text">Go To Cart ⮞</p> {/* Moved inside the div */}
             </div> }
-        </section>
-      ) : visibleContactForm ? (
-        <ContactForm toggleContactFormPage={toggleContactFormPage} />
-      ) : showCart && !visibleAddItem && !visibleEditItem && !visibleContactForm && !visibleDeleteItem ? (
-        <Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/> 
-      ) : visibleEditItem ? (
-        <UpdateItem toggleEditItemPage={toggleEditItemPage} />
-      ) : visibleDeleteItem ? (
-        <DeleteItem toggleDeleteItemPage={toggleDeleteItemPage} />
-      ) : (
-        <AddItems toggleAddItemPage={toggleAddItemPage} />
-      )}
+        </section>} />
+
+        { userName === '' && <Route path='/loginsignup' element={<LoginSignup 
+        closeModal={closeModal} 
+        hideLoginButtonfunc={hideLoginButtonfunc}
+        gettingUserName={gettingUserName}
+        gettingUserId={gettingUserId}
+        gettingAccountType={gettingAccountType}
+        flagRemoveItemsInLoginSignupValue={flagRemoveItemsInLoginSignup}
+        />} /> }
+      { (menuItems.length > 0  || searchQuery) && <Route path='/cart' element={<Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/>} /> }
+      { userName !== '' && (menuItems.length > 0  || searchQuery) && <Route path='/contact' element={<ContactForm />} /> }
+      { userName !== '' && (menuItems.length > 0  || searchQuery) && accountType === 'admin' && 
+      <>
+        <Route path='/addItem' element={<AddItems />} />
+        <Route path='/updateItem' element={<UpdateItem items={items} />} />
+        <Route path='/deleteItem' element={<DeleteItem />} />
+      </>}
+    </Routes>
+    
     </main>
   );
 }

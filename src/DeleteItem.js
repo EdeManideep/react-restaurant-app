@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import './DeleteItem.css'; // Make sure your CSS is properly linked
+import './DeleteItem.css';
 
 function DeleteItem() {
     const [items, setItems] = useState([]);
-    const [filteredItems, setFilteredItems] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
     const [selectedItem, setSelectedItem] = useState(null);
 
+    // Fetch items from the server when the component mounts
     useEffect(() => {
-        // Fetch items from the backend
         const fetchItems = async () => {
             try {
-                const response = await fetch('https://react-restaurant-app-1.onrender.com/items'); // Update URL if needed
+                const response = await fetch('https://react-restaurant-app-1.onrender.com/items');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -19,7 +17,6 @@ function DeleteItem() {
                 // Sort items alphabetically by name
                 const sortedItems = data.sort((a, b) => a.name.localeCompare(b.name));
                 setItems(sortedItems);
-                setFilteredItems(sortedItems);
             } catch (error) {
                 console.error('Error fetching items:', error);
             }
@@ -27,32 +24,21 @@ function DeleteItem() {
 
         fetchItems();
     }, []);
-    // console.log(items);
 
-    const handleSearch = (e) => {
-        setSearchTerm(e.target.value);
-        const filtered = items.filter(item =>
-            item.name.toLowerCase().includes(e.target.value.toLowerCase())
-        );
-        setFilteredItems(filtered);
-    };
-
+    // Handle deleting the selected item
     const handleDelete = async () => {
         if (!selectedItem) return;
 
         const confirmDelete = window.confirm(`Are you sure you want to delete ${selectedItem.name}?`);
         if (confirmDelete) {
             try {
-                const response = await fetch(`https://react-restaurant-app-1.onrender.com/delete-item/${selectedItem.id}`, { // Update URL if needed
+                const response = await fetch(`https://react-restaurant-app-1.onrender.com/delete-item/${selectedItem.id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
-                    // Remove the deleted item from the state
                     const updatedItems = items.filter(item => item.id !== selectedItem.id);
                     setItems(updatedItems);
-                    setFilteredItems(updatedItems);
-                    setSelectedItem(null);
-                    setSearchTerm('');
+                    setSelectedItem(null); // Clear the selected item after deletion
                     alert(`Item "${selectedItem.name}" has been deleted successfully.`);
                 } else {
                     alert(`Failed to delete item "${selectedItem.name}".`);
@@ -63,35 +49,32 @@ function DeleteItem() {
         }
     };
 
+    // Handle selection change in dropdown
+    const handleSelectChange = (e) => {
+        const selected = items.find(item => item.name === e.target.value);
+        setSelectedItem(selected);
+    };
+    // console.log(selectedItem);
+
     return (
-        <div className="delete-item-container">
-            <h2 className="delete-item-title">Delete an Item</h2>
-            <input
-                type="text"
-                placeholder="Search item by name..."
-                value={searchTerm}
-                onChange={handleSearch}
-                className="search-input"
-            />
-            <select
-                className="item-select"
-                value={selectedItem ? selectedItem.id : ''}
-                onChange={(e) => {
-                    const selectedId = e.target.value;
-                    const selectedItem = items.find(item => item.id === parseInt(selectedId, 10));
-                    setSelectedItem(selectedItem);
-                }}
-            >
-                <option value="">Select an item to delete</option>
-                {filteredItems.map((item) => (
-                    <option key={item.id} value={item.id.toString()}>
+        <div className="delete-item-page">
+            <div className="delete-item-box">
+                <h2 className="delete-item-header">Delete an Item</h2>
+
+                <select className="delete-item-select" onChange={handleSelectChange} value={selectedItem ? selectedItem.name : ''}>
+                <option value="">Select an item</option>
+                    {items.map((item) => (
+                    <option key={item.id} value={item.name}>
                         {item.name}
                     </option>
-                ))}
-            </select>
-            <button onClick={handleDelete} className="delete-button">
-                Delete
-            </button>
+                    ))}
+                </select>
+
+                {/* Delete button */}
+                <button onClick={handleDelete} className="delete-item-btn">
+                    Delete
+                </button>
+            </div>
         </div>
     );
 }
