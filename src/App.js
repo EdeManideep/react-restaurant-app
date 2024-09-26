@@ -18,21 +18,48 @@ function App() {
   const [items, setItems] = useState([]);
   const [menuItems, setMenuItems] = useState(items);
   const navigate = useNavigate();
+  const [refreshTime, setRefreshTime] = useState(true);
 
+  // First useEffect: Fetch data once when the component mounts
   useEffect(() => {
     fetch('https://react-restaurant-app-1.onrender.com/items')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok ' + response.statusText);
+        }else{
+          setRefreshTime(false);
         }
         return response.json();
       })
       .then(data => setItems(data))
-      .catch(error => console.error('Error fetching data:', error));  
+      .catch(error => console.error('Error fetching data:', error));
   }, []);
+  // console.log(refreshTime);
+  // console.log(items);
   
 
-  // console.log(items);
+  // Second useEffect: Fetch data every 30 seconds (periodic update)
+  useEffect(() => {
+    const fetchItemsPeriodically = () => {
+      fetch('https://react-restaurant-app-1.onrender.com/items')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => setItems(data))
+        .catch(error => console.error('Error fetching data:', error));
+    };
+
+    // Set interval to update data every 30 seconds
+    const interval = setInterval(() => {
+      fetchItemsPeriodically();
+    }, 30000); // 30 seconds = 30000 ms
+
+    // Cleanup function to clear the interval when component unmounts
+    return () => clearInterval(interval);
+  }, []);
 
   const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
     if (a.toLowerCase() === 'all') return -1; 
@@ -79,8 +106,6 @@ function App() {
   const updatesearchquery = (value) => {
     setSearchQuery(value);
   };
-  // console.log(searchQuery);
-
 
   const filterItem = (category) => {
     setSelectedCategory(category);
@@ -217,17 +242,44 @@ function App() {
     localStorage.removeItem(`cartItems${userId}`);
   }
 
+  // Function to handle when an item is deleted in DeleteItem component
+  const handleDeleteItem = (deletedItem) => {
+    const cartItem = cartItems.find(item => item.name === deletedItem.name);
+    if (cartItem) {
+        // Call updateCartItem to remove the item from the cart
+        updateCartItem(deletedItem.name, 0);
+        alert(`${deletedItem.name} was in the cart and has been removed.`);
+    }
+  };
+
   const [popupMessageTop, setPopupMessageTop] = useState('');
   
   return (
     <main style={{ 
-      backgroundImage: menuItems.length === 0 && searchQuery === '' ? 'url(./images/bg-loading-menu-items.jpg)' : 'none',
+      backgroundImage: refreshTime ? 'url(./images/bg-loading-menu-items.jpg)' : 'none',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       height: '100vh',
       width: '100%',
-      position: 'relative'
+      position: 'relative',
+      zIndex: 1000
     }}>
+
+    { refreshTime && (
+      <div className='loading-the-page-refreshTime'>
+        <div className='loading-the-page'>
+          <h4>
+            <img src='./images/loading-icon.gif' alt='loading-icon'  className='loading-icon'/> 
+            Preparing Database
+            <br /><br />
+            This may take a few seconds, please be patience
+            <br /><br />
+            Because the back end is deployed on free service!
+          </h4>
+          <h4 className='nameDesign'>-Flavors of India</h4>
+        </div>
+      </div>
+    ) }
 
   { (menuItems.length > 0  || searchQuery) &&
     <Navbar 
@@ -243,7 +295,7 @@ function App() {
     <BackToTop />
     
     <Routes>
-      <Route path='/' element={
+      {refreshTime === false && <Route path='/' element={
         <section className="menu section">
           { (menuItems.length > 0  || searchQuery) &&
             <div className="title">
@@ -259,7 +311,7 @@ function App() {
             /> }
 
           <div className='section-center'>
-            {menuItems.length ? (
+            {menuItems.length !== 0 && (
               menuItems.map((menuItem, index) => {
               const { id, name, image, description, price,count_products_available
               } = menuItem;
@@ -297,7 +349,9 @@ function App() {
                     </div>
                   </div>
               );
-            })): menuItems.length  === 0 && searchQuery ? (
+            })) }
+            
+            { menuItems.length  === 0 && searchQuery && (
               <div className='no-filter-items'>
                   <h4>
                     No items found <FontAwesomeIcon icon={faFaceFrown} />
@@ -305,17 +359,7 @@ function App() {
                     Please try any other items
                   </h4>
               </div>
-            ) : (
-              <div className='loading-the-page'>
-                <h4>
-                  <img src='./images/loading-icon.gif' alt='loading-icon'  className='loading-icon'/> 
-                  Preparing Database
-                  <br /><br />
-                  This may take a few seconds, please be patience
-                </h4>
-                <h4 className='nameDesign'>-Flavors of India</h4>
-              </div>
-            )}
+            )} 
           </div>
 
           { menuItems.length > 0 &&
@@ -323,7 +367,7 @@ function App() {
               <img src="./images/cart-icon.png" alt="Cart Icon" />
               <p className="goToCart-text">Go To Cart ⮞</p> {/* Moved inside the div */}
             </div> }
-        </section>} />
+        </section>} /> }
 
         { userName === '' && <Route path='/loginsignup' element={<LoginSignup 
         closeModal={closeModal} 
@@ -339,8 +383,26 @@ function App() {
       <>
         <Route path='/addItem' element={<AddItems />} />
         <Route path='/updateItem' element={<UpdateItem items={items} />} />
-        <Route path='/deleteItem' element={<DeleteItem />} />
+        <Route path='/deleteItem' element={<DeleteItem onDeleteItem={handleDeleteItem} />} />
       </>}
+
+      { refreshTime === false && <Route path="*" element={
+        <div class="full-page-not-found" style={{ 
+          backgroundImage: 'url(./images/bg-loading-menu-items.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '100vh',
+          width: '100%',
+          position: 'relative',
+          zIndex: 1001
+        }}>
+          <div class="message-container-not-found">
+              <h2>Page Not Found</h2>
+              <p>Sorry, the page you are looking for does not exist.</p>
+              <a href="/" class="home-button">Go Back Home</a>
+          </div>
+        </div>} /> }
+
     </Routes>
     
     </main>

@@ -6,7 +6,6 @@ import PopupMessage from './PopupMessage';
 import { useNavigate } from  'react-router-dom';
 
 function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
-  const [selectedValues, setSelectedValues] = useState({});
   const [popupMessageTop, setPopupMessageTop] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [flagDisplayClearButton, setFlagDisplayClearButton] = useState(false);
@@ -25,15 +24,8 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
     }
   }, [cartItems]);
 
-  const handleSelectChange = (name, value) => {
-    setSelectedValues(prevValues => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
-  const handleAddItem = (name, currentCount, selectedValue) => {
-    const newCount = currentCount + selectedValue;
+  const handleAddItem = (name, currentCount) => {
+    const newCount = currentCount + 1;
 
     if (newCount > 100) {
       setPopupMessageTop('');
@@ -47,8 +39,8 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
     setTimeout(() => setPopupMessageTop(`${name} Updated Successfully`), 0);
   };
 
-  const handleRemoveItem = (name, currentCount, selectedValue) => {
-    const newCount = currentCount - selectedValue;
+  const handleRemoveItem = (name, currentCount) => {
+    const newCount = currentCount - 1;
 
     if (newCount <= 0) {
       updateCartItem(name, 0);
@@ -123,7 +115,7 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
           <PopupMessage message={popupMessageTop} duration={1500} />
           <div className='cart-header'>
             <span className='cart-header-item-name'>Item Name</span>
-            <span className='cart-header-item-count'>Count</span>
+            <span className='cart-header-item-count'>Quantity</span>
             <span className='cart-header-item-price'>Price</span>
             <span className='cart-header-item-total-price'>Total Price</span>
             <span className='cart-header-item-action'>Item Action's</span>
@@ -131,7 +123,6 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
           <ul>
             {cartItems.map((item, index) => {
               const totalCost = item.price * item.count;
-              const selectedValue = selectedValues[item.name] || 1;
 
               return (
                 <li key={index} className='cart-item'>
@@ -147,13 +138,9 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
                         <span>₹{totalCost}</span>
                       </div>
                       <div className="item-actions">
-                        <select value={selectedValue} onChange={(e) => handleSelectChange(item.name, parseInt(e.target.value))} className="item-select">
-                          {[...Array(5).keys()].map(i => (
-                            <option key={i + 1} value={i + 1}>{i + 1}</option>
-                          ))}
-                        </select>
-                        <button onClick={() => handleAddItem(item.name, item.count, selectedValue)} className="add-item">Add Item</button>
-                        <button onClick={() => handleRemoveItem(item.name, item.count, selectedValue)} className="delete-item">Remove Item</button>
+                        <button onClick={() => handleAddItem(item.name, item.count)} className="add-remove-item">➕</button>
+                        <span>{item.count}</span>
+                        <button onClick={() => handleRemoveItem(item.name, item.count)} className="add-remove-item">➖</button>
                         <button onClick={() => {updateCartItem(item.name, 0); setPopupMessageTop(`${item.name} Deleted From Cart`);}} className="delete-item">Delete Item</button>
                       </div>
                     </div>
@@ -185,9 +172,15 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
           </div>
 
           {showCheckoutOptions && (
-            <div className="checkout-options">
-              <button className="option-button">Take Away</button>
-              <button className="option-button">Book a Table</button>
+            <div className="confirmation-modal">
+              <div className="confirmation-content">
+                <button className="close-btn-cart" onClick={handleCheckout}>×</button>
+                <h4>Choose One Option</h4>
+                <div className="confirmation-actions">
+                <button className="option-button">Take Away</button>
+                <button className="option-button">Book a Table</button>
+                </div>
+              </div>
             </div>
           )}
         </div>

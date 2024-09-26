@@ -25,6 +25,8 @@ const Filter = ({ allCategories, filterItem, updatesearchquery }) => {
     filterItem(currentCategory);
   }, [filterItem, currentCategory]);
 
+  console.log(inputValue);
+
   return (
     <div>
       <div className='btn-container'>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './DeleteItem.css';
 
-function DeleteItem() {
+function DeleteItem({ onDeleteItem }) {
     const [items, setItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -38,8 +38,9 @@ function DeleteItem() {
                 if (response.ok) {
                     const updatedItems = items.filter(item => item.id !== selectedItem.id);
                     setItems(updatedItems);
-                    setSelectedItem(null); // Clear the selected item after deletion
                     alert(`Item "${selectedItem.name}" has been deleted successfully.`);
+                    onDeleteItem(selectedItem);
+                    setSelectedItem(null); // Clear the selected item after deletion
                 } else {
                     alert(`Failed to delete item "${selectedItem.name}".`);
                 }
