@@ -5,7 +5,7 @@ import './Cart.css';
 import PopupMessage from './PopupMessage';
 import { useNavigate } from  'react-router-dom';
 
-function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
+function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   const [popupMessageTop, setPopupMessageTop] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [flagDisplayClearButton, setFlagDisplayClearButton] = useState(false);
@@ -73,6 +73,40 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
   // Calculate total count of items and total amount
   const totalItemCount = cartItems.reduce((acc, item) => acc + item.count, 0);
   const totalAmount = cartItems.reduce((acc, item) => acc + (item.count * item.price), 0);
+
+  const submitCartItems = async () => {
+    try {
+        const response = await fetch('https://react-restaurant-app-1.onrender.com/add-cart-item', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                user_name: userName,
+                order_status: 'pending',
+                cart_items: cartItems.map(item => ({
+                    item_name: item.name,
+                    quantity: item.count,
+                })),
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Server error: ${errorData.error || 'Unknown error'}`);
+        } else {
+            setPopupMessageTop('Cart items added successfully');
+            setTimeout(() => {
+                clearCartItems();
+            }, 2000);
+        }
+    } catch (error) {
+        console.error('Error submitting cart items:', error.message || error);
+        setPopupMessageTop('Failed to add cart items');
+    }
+};
+
 
   return (
     <div className='cart'>
@@ -177,7 +211,7 @@ function Cart({ cartItems, userName, updateCartItem, clearCartItems }) {
                 <button className="close-btn-cart" onClick={handleCheckout}>×</button>
                 <h4>Choose One Option</h4>
                 <div className="confirmation-actions">
-                <button className="option-button">Take Away</button>
+                <button className="option-button" onClick={submitCartItems} >Take Away</button>
                 <button className="option-button">Book a Table</button>
                 </div>
               </div>

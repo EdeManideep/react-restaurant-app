@@ -13,6 +13,7 @@ import PopupMessage from './PopupMessage';
 import BackToTop from './BackToTop';
 import UpdateItem from './UpdateItem'
 import DeleteItem from './DeleteItem';
+import Orders from './Orders'
 
 function App() {
   const [items, setItems] = useState([]);
@@ -377,8 +378,12 @@ function App() {
         gettingAccountType={gettingAccountType}
         flagRemoveItemsInLoginSignupValue={flagRemoveItemsInLoginSignup}
         />} /> }
-      { (menuItems.length > 0  || searchQuery) && <Route path='/cart' element={<Cart cartItems={cartItems} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/>} /> }
-      { userName !== '' && (menuItems.length > 0  || searchQuery) && <Route path='/contact' element={<ContactForm />} /> }
+      { (menuItems.length > 0  || searchQuery) && <Route path='/cart' element={<Cart cartItems={cartItems} userId={userId} userName={userName} toggleCartPage={toggleCartPage} updateCartItem={updateCartItem} clearCartItems={clearCartItems}/>} /> }
+      { userName !== '' && (menuItems.length > 0  || searchQuery) &&
+      <>
+        <Route path='/contact' element={<ContactForm />} />
+        <Route path='/orders' element={<Orders accountType={accountType} />} />
+      </>}
       { userName !== '' && (menuItems.length > 0  || searchQuery) && accountType === 'admin' && 
       <>
         <Route path='/addItem' element={<AddItems />} />

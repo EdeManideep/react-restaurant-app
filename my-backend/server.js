@@ -107,6 +107,70 @@ app.delete('/delete-item/:id', async (req, res) => {
     }
 });
 
+// Route to add items to the cart
+app.post('/add-cart-item', async (req, res) => {
+    const { user_id, user_name, order_status, cart_items } = req.body;
+
+    // Check if all required fields are provided
+    if (!user_id || !user_name || !order_status || !cart_items || !Array.isArray(cart_items)) {
+        return res.status(400).json({ error: 'Invalid input: All fields are required and cart_items must be an array' });
+    }
+
+    try {
+        // Loop through the items in the cart and insert each one into the CartItems table
+        for (const item of cart_items) {
+            const { item_name, quantity } = item;
+
+            if (!item_name || !quantity) {
+                return res.status(400).json({ error: 'Invalid input: Each cart item must contain item_name and quantity' });
+            }
+
+            const queryStr = `INSERT INTO orders (user_id, user_name, order_status, item_name, quantity) VALUES ($1, $2, $3, $4, $5)`;
+            const values = [user_id, user_name, order_status, item_name, quantity];
+
+            // Execute the query for each item
+            await query(queryStr, values);
+        }
+
+        // Clear the cart after adding items to the database (can be handled client-side)
+        res.status(200).json({ message: 'Cart items added successfully' });
+    } catch (err) {
+    console.error('Error adding cart items:', err.message || err);
+    res.status(500).json({ error: 'Failed to add cart items', details: err.message });
+}
+});
+
+// Route to fetch orders
+app.get('/orders', async (req, res) => {
+    try {
+        const queryStr = 'SELECT * FROM orders';
+        const results = await query(queryStr);
+        res.json(results);
+    } catch (err) {
+        console.error('Error fetching orders:', err);
+        res.status(500).send('Error fetching orders');
+    }
+});
+
+// Route to update order status
+app.put('/orders/:id', async (req, res) => {
+    const { id } = req.params;
+    const { order_status } = req.body;
+
+    if (!order_status) {
+        return res.status(400).json({ error: 'Order status is required' });
+    }
+
+    try {
+        const queryStr = 'UPDATE orders SET order_status = $1 WHERE order_id = $2';
+        await query(queryStr, [order_status, id]);
+        res.status(200).json({ message: 'Order status updated successfully' });
+    } catch (err) {
+        console.error('Error updating order status:', err);
+        res.status(500).json({ error: 'Failed to update order status' });
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
