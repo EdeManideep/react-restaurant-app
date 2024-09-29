@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './Orders.css';
 
-function Orders({ accountType }) {
+function Orders({ accountType, userId }) {
     const [orders, setOrders] = useState([]);
     const [loadingOrderId, setLoadingOrderId] = useState(null);
 
     // Function to fetch orders from the database
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         try {
             const response = await fetch('https://react-restaurant-app-1.onrender.com/orders'); 
             const data = await response.json();
-            setOrders(data);
+            // Filter orders if account type is user
+            if (accountType === 'user') {
+                const userOrders = data.filter(order => order.user_id === userId);
+                setOrders(userOrders);
+            } else {
+                setOrders(data);
+            }
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
-    };
+    }, [accountType, userId]); // Add dependencies for fetchOrders
 
     // Function to update order status
     const updateOrderStatus = async (orderId, status) => {
@@ -49,7 +55,7 @@ function Orders({ accountType }) {
 
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
-    }, []);
+    }, [fetchOrders]); // Add fetchOrders to the dependency array
 
     const capitalize = (text) => {
         return text.charAt(0).toUpperCase() + text.slice(1);
