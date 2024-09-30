@@ -201,6 +201,7 @@ function App() {
             name: item.name,
             price: item.price,
             count: 1,
+            itemId: item.id,
           };
           return [...prevItems, cartItem];
         }

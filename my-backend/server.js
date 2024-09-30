@@ -117,28 +117,29 @@ app.post('/add-cart-item', async (req, res) => {
     }
 
     try {
-        // Loop through the items in the cart and insert each one into the CartItems table
+        // Loop through the items in the cart and insert each one into the Orders table
         for (const item of cart_items) {
-            const { item_name, quantity } = item;
+            const { item_name, quantity, itemId } = item;
 
-            if (!item_name || !quantity) {
-                return res.status(400).json({ error: 'Invalid input: Each cart item must contain item_name and quantity' });
+            if (!item_name || !quantity || !itemId) {
+                return res.status(400).json({ error: 'Invalid input: Each cart item must contain item_name, quantity, and itemId' });
             }
 
-            const queryStr = `INSERT INTO orders (user_id, user_name, order_status, item_name, quantity) VALUES ($1, $2, $3, $4, $5)`;
-            const values = [user_id, user_name, order_status, item_name, quantity];
+            const queryStr = `INSERT INTO orders (user_id, user_name, order_status, item_name, quantity, item_id) VALUES ($1, $2, $3, $4, $5, $6)`;
+            const values = [user_id, user_name, order_status, item_name, quantity, itemId];
 
             // Execute the query for each item
-            await query(queryStr, values);
+            await pool.query(queryStr, values); // Make sure to use 'pool.query' for executing the query
         }
 
         // Clear the cart after adding items to the database (can be handled client-side)
         res.status(200).json({ message: 'Cart items added successfully' });
     } catch (err) {
-    console.error('Error adding cart items:', err.message || err);
-    res.status(500).json({ error: 'Failed to add cart items', details: err.message });
-}
+        console.error('Error adding cart items:', err.message || err);
+        res.status(500).json({ error: 'Failed to add cart items', details: err.message });
+    }
 });
+
 
 // Route to fetch orders
 app.get('/orders', async (req, res) => {
