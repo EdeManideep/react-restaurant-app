@@ -171,6 +171,61 @@ app.put('/orders/:id', async (req, res) => {
     }
 });
 
+// GET route to fetch available quantity by item name
+app.get('/item-availability/:itemName', async (req, res) => {
+    const { itemName } = req.params;
+
+    try {
+        const queryStr = 'SELECT count_products_available FROM Items WHERE name = $1';
+        const values = [itemName];
+
+        const result = await pool.query(queryStr, values);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        const availableCount = result.rows[0].count_products_available;
+        res.status(200).json({ available_count: availableCount });
+    } catch (error) {
+        console.error('Error fetching available quantity:', error);
+        res.status(500).json({ error: 'Failed to fetch available quantity' });
+    }
+});
+
+// PUT route to update available count by item name
+app.put('/update-available-count/:itemName', async (req, res) => {
+    const { itemName } = req.params;
+    const { count_products_available } = req.body;
+
+    // Ensure that count_products_available is provided and is a valid number
+    if (count_products_available == null || isNaN(count_products_available)) {
+        return res.status(400).json({ error: 'Valid count_products_available is required' });
+    }
+
+    try {
+        const queryStr = `
+            UPDATE Items
+            SET count_products_available = $1
+            WHERE name = $2
+        `;
+        const values = [count_products_available, itemName];
+
+        const result = await pool.query(queryStr, values);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        res.status(200).json({ message: 'Available count updated successfully' });
+    } catch (error) {
+        console.error('Error updating available count:', error);
+        res.status(500).json({ error: 'Failed to update available count' });
+    }
+});
+
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
