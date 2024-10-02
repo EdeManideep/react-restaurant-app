@@ -89,7 +89,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
                 cart_items: cartItems.map(item => ({
                     item_name: item.name,
                     quantity: item.count,
-                    itemId: item.id,
+                    itemId: item.itemId,
                 })),
             }),
         });
