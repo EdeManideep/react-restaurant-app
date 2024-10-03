@@ -162,7 +162,7 @@ function Orders({ accountType, userId }) {
                                         <span>Updating To DB</span>
                                     ) : accountType === 'admin' && order.order_status === 'pending' ? (
                                         <div>
-                                            <button onClick={() => handleAcceptOrder(order.order_id, order.item_name, order.quantity)}>Accept</button>
+                                            <button onClick={() => handleAcceptOrder(order.order_id,  order.item_name, order.quantity)}>Accept</button>
                                             <button onClick={() => updateOrderStatus(order.order_id, 'declined')}>Decline</button>
                                         </div>
                                     ) : (
