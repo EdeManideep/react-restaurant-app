@@ -76,7 +76,7 @@ function Orders({ accountType, userId }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ available_count: newCount }),
+                body: JSON.stringify({ count_products_available: newCount }),
             });
         } catch (error) {
             console.error('Error updating item count:', error);
