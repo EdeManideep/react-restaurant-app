@@ -24,9 +24,9 @@ function Orders({ accountType, userId }) {
     }, [accountType, userId]);
 
     // Function to check item availability from the database
-    const fetchItemAvailability = async (itemName) => {
+    const fetchItemAvailability = async (item_id) => {
         try {
-            const response = await fetch(`https://react-restaurant-app-1.onrender.com/item-availability/${itemName}`);
+            const response = await fetch(`https://react-restaurant-app-1.onrender.com/item-availability/${item_id}`);
             const data = await response.json();
             return data.available_count; // Assuming the available count is returned
         } catch (error) {
@@ -36,10 +36,10 @@ function Orders({ accountType, userId }) {
     };
 
     // Function to update order status and check availability
-    const handleAcceptOrder = async (orderId, itemName, orderQuantity) => {
+    const handleAcceptOrder = async (orderId, item_id, itemName, orderQuantity) => {
         setLoadingOrderId(orderId);
         try {
-            const availableCount = await fetchItemAvailability(itemName);
+            const availableCount = await fetchItemAvailability(item_id);
 
             if (availableCount === null) {
                 throw new Error('Failed to fetch available item count.');
@@ -52,7 +52,7 @@ function Orders({ accountType, userId }) {
             } else {
                 // Accept the order and reduce the available count
                 await updateOrderStatus(orderId, 'accepted');
-                await updateItemCount(itemName, availableCount - orderQuantity);
+                await updateItemCount(item_id, availableCount - orderQuantity);
             }
             
             setTimeout(() => {
@@ -69,9 +69,9 @@ function Orders({ accountType, userId }) {
     };
 
     // Function to update item count in the database
-    const updateItemCount = async (itemName, newCount) => {
+    const updateItemCount = async (item_id, newCount) => {
         try {
-            await fetch(`https://react-restaurant-app-1.onrender.com/update-available-count/${itemName}`, {
+            await fetch(`https://react-restaurant-app-1.onrender.com/update-available-count/${item_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ function Orders({ accountType, userId }) {
                                         <span>Updating To DB</span>
                                     ) : accountType === 'admin' && order.order_status === 'pending' ? (
                                         <div>
-                                            <button onClick={() => handleAcceptOrder(order.order_id,  order.item_name, order.quantity)}>Accept</button>
+                                            <button onClick={() => handleAcceptOrder(order.order_id,  order.item_id, order.item_name, order.quantity)}>Accept</button>
                                             <button onClick={() => updateOrderStatus(order.order_id, 'declined')}>Decline</button>
                                         </div>
                                     ) : (

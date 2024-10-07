@@ -173,12 +173,12 @@ app.put('/orders/:id', async (req, res) => {
 });
 
 // GET route to fetch available quantity by item name
-app.get('/item-availability/:itemName', async (req, res) => {
-    const { itemName } = req.params;
+app.get('/item-availability/:item_id', async (req, res) => {
+    const { item_id } = req.params;
 
     try {
         const queryStr = 'SELECT count_products_available FROM Items WHERE name = $1';
-        const values = [itemName];
+        const values = [item_id];
 
         const result = await pool.query(queryStr, values);
 
@@ -195,8 +195,8 @@ app.get('/item-availability/:itemName', async (req, res) => {
 });
 
 // PUT route to update available count by item name
-app.put('/update-available-count/:itemName', async (req, res) => {
-    const { itemName } = req.params;
+app.put('/update-available-count/:item_id', async (req, res) => {
+    const { item_id } = req.params;
     const { count_products_available } = req.body;
 
     // Ensure that count_products_available is provided and is a valid number
@@ -210,7 +210,7 @@ app.put('/update-available-count/:itemName', async (req, res) => {
             SET count_products_available = $1
             WHERE name = $2
         `;
-        const values = [count_products_available, itemName];
+        const values = [count_products_available, item_id];
 
         const result = await pool.query(queryStr, values);
 
