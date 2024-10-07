@@ -177,7 +177,7 @@ app.get('/item-availability/:item_id', async (req, res) => {
     const { item_id } = req.params;
 
     try {
-        const queryStr = 'SELECT count_products_available FROM Items WHERE name = $1';
+        const queryStr = 'SELECT count_products_available FROM Items WHERE id = $1';
         const values = [item_id];
 
         const result = await pool.query(queryStr, values);
@@ -208,7 +208,7 @@ app.put('/update-available-count/:item_id', async (req, res) => {
         const queryStr = `
             UPDATE Items
             SET count_products_available = $1
-            WHERE name = $2
+            WHERE id = $2
         `;
         const values = [count_products_available, item_id];
 
