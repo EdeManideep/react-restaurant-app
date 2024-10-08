@@ -145,6 +145,13 @@
   align-items: center;
   text-align: center;
   padding-top: 20px;
+  height: 200px;
+}
+
+.empty-cart-div h4{
+  /* height: 200px; */
+  /* translateX: 50px; */
+  margin-top: 60px;
 }
 
 .back-button {

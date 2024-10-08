@@ -4,12 +4,14 @@ import { faFaceFrown } from '@fortawesome/free-regular-svg-icons';
 import './Cart.css';
 import PopupMessage from './PopupMessage';
 import { useNavigate } from  'react-router-dom';
+import Loading from './Loading';
 
 function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   const [popupMessageTop, setPopupMessageTop] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [flagDisplayClearButton, setFlagDisplayClearButton] = useState(false);
   const [showCheckoutOptions, setShowCheckoutOptions] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const toggleCartPage = () => {
@@ -68,6 +70,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   // Function to handle checkout button click
   const handleCheckout = () => {
     setShowCheckoutOptions(!showCheckoutOptions);
+    setLoading(false);
   };
 
   // Calculate total count of items and total amount
@@ -77,6 +80,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
 
   const submitCartItems = async () => {
     try {
+        setLoading(true);
         const response = await fetch('https://react-restaurant-app-1.onrender.com/add-cart-item', {
             method: 'POST',
             headers: {
@@ -106,6 +110,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
     } catch (error) {
         console.error('Error submitting cart items:', error.message || error);
         setPopupMessageTop('Failed to add cart items');
+        setLoading(false);
     }
 };
 
@@ -216,6 +221,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
                 <button className="option-button" onClick={submitCartItems} >Take Away</button>
                 <button className="option-button">Book a Table</button>
                 </div>
+                {loading && <Loading text="Request Processing" />}
               </div>
             </div>
           )}
