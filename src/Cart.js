@@ -106,7 +106,8 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
             setPopupMessageTop('Cart items added successfully');
             setTimeout(() => {
                 clearCartItems();
-            }, 2000);
+                sendTakeAwayOrderEmail(userId, userName, cartItems);
+            }, 1500);
         }
     } catch (error) {
         console.error('Error submitting cart items:', error.message || error);
