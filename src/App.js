@@ -40,27 +40,27 @@ function App() {
   
 
   // Second useEffect: Fetch data every 30 seconds (periodic update)
-  useEffect(() => {
-    const fetchItemsPeriodically = () => {
-      fetch('https://react-restaurant-app-1.onrender.com/items')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.json();
-        })
-        .then(data => setItems(data))
-        .catch(error => console.error('Error fetching data:', error));
-    };
+  // useEffect(() => {
+  //   const fetchItemsPeriodically = () => {
+  //     fetch('https://react-restaurant-app-1.onrender.com/items')
+  //       .then(response => {
+  //         if (!response.ok) {
+  //           throw new Error('Network response was not ok ' + response.statusText);
+  //         }
+  //         return response.json();
+  //       })
+  //       .then(data => setItems(data))
+  //       .catch(error => console.error('Error fetching data:', error));
+  //   };
 
-    // Set interval to update data every 30 seconds
-    const interval = setInterval(() => {
-      fetchItemsPeriodically();
-    }, 30000); // 30 seconds = 30000 ms
+  //   // Set interval to update data every 30 seconds
+  //   const interval = setInterval(() => {
+  //     fetchItemsPeriodically();
+  //   }, 30000); // 30 seconds = 30000 ms
 
-    // Cleanup function to clear the interval when component unmounts
-    return () => clearInterval(interval);
-  }, []);
+  //   // Cleanup function to clear the interval when component unmounts
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const allCategories = ['all', ...new Set(items.map((item) => item.category))].sort((a, b) => {
     if (a.toLowerCase() === 'all') return -1; 
