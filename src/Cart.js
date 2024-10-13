@@ -116,21 +116,19 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
     }
 };
 
-
 const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
-  // Format the cart items into a string for the email
   const formattedCartItems = cartItems
     .map((item) => `Item: ${item.name}, Quantity: ${item.count}, Item ID: ${item.itemId}`)
-    .join('\n'); // Join items with a line break
+    .join('<br>'); // Join items with a line break for HTML email
 
   const templateParams = {
     user_id: userId,
     user_name: userName,
-    cart_items: formattedCartItems, // Send formatted cart items
+    cart_items: formattedCartItems, // Pass formatted cart items as string
   };
 
   emailjs
-    .send('service_9ghb2jv', 'template_su2nsh6', templateParams, 'Mn_4WKImjdoWqHU8F') // Replace with your actual service ID, template ID, and user ID
+    .send('service_9ghb2jv', 'template_su2nsh6', templateParams, 'Mn_4WKImjdoWqHU8F')
     .then(
       (result) => {
         console.log('Email sent successfully:', result.text);
@@ -140,7 +138,6 @@ const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
       }
     );
 };
-
 
   return (
     <div className='cart'>
