@@ -117,14 +117,20 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
 };
 
 const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
+  // Loop through the items to create rows with both item name and quantity
   const formattedCartItems = cartItems
-    .map((item) => `Item: ${item.name}, Quantity: ${item.count}, Item ID: ${item.itemId}`)
-    .join('<br>'); // Join items with a line break for HTML email
+    .map(item => `
+      <tr>
+        <td>${item.name}</td>
+        <td>${item.count}</td>
+      </tr>
+    `)
+    .join(''); // Join the HTML table rows as a single string
 
   const templateParams = {
     user_id: userId,
     user_name: userName,
-    cart_items: formattedCartItems, // Pass formatted cart items as string
+    cart_items: formattedCartItems, // Pass the formatted HTML string for table rows
   };
 
   emailjs
@@ -138,6 +144,7 @@ const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
       }
     );
 };
+
 
   return (
     <div className='cart'>
