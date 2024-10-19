@@ -13,6 +13,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   const [flagDisplayClearButton, setFlagDisplayClearButton] = useState(false);
   const [showCheckoutOptions, setShowCheckoutOptions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingBookTable, setLoadingBookTable] = useState(false);
   const navigate = useNavigate();
 
   const toggleCartPage = () => {
@@ -72,6 +73,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   const handleCheckout = () => {
     setShowCheckoutOptions(!showCheckoutOptions);
     setLoading(false);
+    setLoadingBookTable(false);
   };
 
   // Calculate total count of items and total amount
@@ -115,6 +117,8 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
         setLoading(false);
     }
 };
+
+
 
 const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
   // Loop through the items to create rows with both item name and quantity
@@ -247,12 +251,15 @@ const sendTakeAwayOrderEmail = (userId, userName, cartItems) => {
             <div className="confirmation-modal">
               <div className="confirmation-content">
                 <button className="close-btn-cart" onClick={handleCheckout}>×</button>
-                <h4>Choose One Option</h4>
-                <div className="confirmation-actions">
-                <button className="option-button" onClick={submitCartItems} >Take Away</button>
-                <button className="option-button">Book a Table</button>
-                </div>
+                { !loading && !loadingBookTable && <>
+                  <h4>Choose One Option</h4>
+                  <div className="confirmation-actions">
+                    <button className="option-button" onClick={submitCartItems} >Take Away</button>
+                    <button className="option-button" onClick={() => setLoadingBookTable(true)}>Book a Table</button>
+                  </div>
+                </>}
                 {loading && <Loading text="Request Processing" />}
+                {!loading && loadingBookTable && <Loading text="This feature is currently under development." />}
               </div>
             </div>
           )}
