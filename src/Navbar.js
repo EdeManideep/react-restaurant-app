@@ -109,7 +109,7 @@ const Navbar = ({ hideLoginButtonValue, userNameValue, accountTypeValue, handleU
                   </>
                 )}
 
-                <button className="contact-button" onClick={() => { navigate('/orders'); setIsDropdownVisible(false); }}>
+                <button className="orders-button" onClick={() => { navigate('/orders'); setIsDropdownVisible(false); }}>
                   Orders
                 </button>
 

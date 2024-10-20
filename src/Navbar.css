@@ -94,7 +94,7 @@
   }
 
   .add-item-button {
-    background-color: #46d27c;
+    background-color: #FFA500;
     color: white;
     border: none;
     padding: 8px 10px;
@@ -102,13 +102,13 @@
     text-align: center;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition for hover effect */
+    transition: background-color 0.3s ease, transform 0.3s ease;
     margin-bottom: 5px;
 }
 
 .add-item-button:hover {
-    background-color: #3bbf6b; /* Darker green for hover */
-    transform: scale(1.05); /* Slightly larger on hover */
+    background-color: #CC8400;
+    transform: scale(1.05);
 }
 
 .edit-item-button {
@@ -147,8 +147,8 @@
     transform: scale(1.05);
 }
 
-.contact-button {
-    background-color: #48af42;
+.orders-button {
+    background-color: #008080;
     color: white;
     border: none;
     padding: 8px 10px;
@@ -160,9 +160,27 @@
     margin-bottom: 5px;
 }
 
-.contact-button:hover {
-    background-color: #3c9b38; /* Darker green for hover */
+.orders-button:hover {
+    background-color: #006666; /* Darker green for hover */
     transform: scale(1.05);
+}
+
+.contact-button {
+  background-color: #48af42;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  width: 113px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.contact-button:hover {
+  background-color: #3c9b38; /* Darker green for hover */
+  transform: scale(1.05);
 }
   
   .logout-button {

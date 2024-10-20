@@ -105,10 +105,11 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
             const errorData = await response.json();
             throw new Error(`Server error: ${errorData.error || 'Unknown error'}`);
         } else {
-            setPopupMessageTop('Cart items added successfully');
+            setPopupMessageTop('Order sent to the restaurant, wait for confirmation.');
             setTimeout(() => {
                 clearCartItems();
                 sendTakeAwayOrderEmail(userId, userName, cartItems);
+                navigate('/orders');
             }, 1500);
         }
     } catch (error) {
