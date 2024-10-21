@@ -79,7 +79,7 @@ function Cart({ cartItems, userId, userName, updateCartItem, clearCartItems }) {
   // Calculate total count of items and total amount
   const totalItemCount = cartItems.reduce((acc, item) => acc + item.count, 0);
   const totalAmount = cartItems.reduce((acc, item) => acc + (item.count * item.price), 0);
-  console.log(cartItems);
+  // console.log(cartItems);
 
   const submitCartItems = async () => {
     try {
