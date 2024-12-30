@@ -137,9 +137,17 @@ const LoginSignup = ({ hideLoginButtonfunc, gettingUserName, gettingUserId, gett
       newErrors.email = 'Please enter a valid email address.';
     }
 
-    if ((!isLogin || (isLogin && loginType === 'admin')) && formData.otp.trim() === '') {
-      newErrors.otp = 'OTP is required.';
+    if ((!isLogin || (isLogin && loginType === 'admin')) && formData.otp.trim() === '' && generatedOTP === '') {
+      newErrors.otp = 'OTP is required, Please Verify Email to send the OTP.';
+    } else if ((!isLogin || (isLogin && loginType === 'admin')) && formData.otp.trim() === '') {
+      newErrors.otp = 'OTP is required, Check Your Email for OTP.';
+    } else if (formData.otp.trim().length < 4) {
+      newErrors.otp = 'OTP must be at least 4 characters.';
+    } else if (formData.otp.trim() !== generatedOTP) {
+      newErrors.otp = 'Invalid OTP.';
     }
+    
+    
 
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (formData.password.trim() === '') {
@@ -356,6 +364,7 @@ const LoginSignup = ({ hideLoginButtonfunc, gettingUserName, gettingUserId, gett
                   type="password"
                   id="otp"
                   placeholder="Enter the OTP"
+                  // minLength={4}
                   maxLength={4}
                   value={formData.otp}
                   onChange={handleInputChange}
