@@ -59,7 +59,7 @@ A responsive and interactive restaurant web application built using **React.js**
 
 ## 🧑‍💻 Author
 
-**Manideep Ede**  
+**EDE MANIDEEP**  
 Built during personal learning & exploration phase to practice full-stack development and UI design using modern tools and APIs.
 
 ---
