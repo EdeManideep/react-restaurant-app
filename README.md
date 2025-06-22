@@ -41,12 +41,6 @@ A responsive and interactive restaurant web application built using **React.js**
 
 ---
 
-## 📸 UI Preview
-
-> _Coming Soon! Add screenshots or demo GIFs here._
-
----
-
 ## 🚀 Live Demo
 
 🔗 **Frontend**: [https://react-restaurant-app1.netlify.app](https://react-restaurant-app1.netlify.app)  
@@ -81,5 +75,3 @@ Built during personal learning & exploration phase to practice full-stack develo
 - CockroachDB
 - sheetDB
 - GitHub
-
----
