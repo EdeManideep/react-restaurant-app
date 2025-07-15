@@ -245,11 +245,13 @@ const LoginSignup = ({ hideLoginButtonfunc, gettingUserName, gettingUserId, gett
       setLoading(false);
     } else {
       try {
+        console.log("loging trying");
         const response = await axios.get(API_URL);
         const users = response.data;
         const user = users.find(
           (user) => user.user_email === formData.email && user.user_password === formData.password
         );
+        console.log(user);
 
         if (user) {
           formData.name=user.user_name;
