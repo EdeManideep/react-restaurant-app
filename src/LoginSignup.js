@@ -229,7 +229,7 @@ const LoginSignup = ({ hideLoginButtonfunc, gettingUserName, gettingUserId, gett
     setLoading(true);
 
     if (!isLogin) {
-      console.log("loging trying");
+      console.log("trying signup.");
       const data = {
         user_name: formData.name,
         user_email: formData.email,
