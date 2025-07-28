@@ -11,7 +11,7 @@ const pool = new Pool({
     user: 'manideep',
     host: 'react-food-app-items-cluster-16204.8nj.gcp-europe-west1.cockroachlabs.cloud',
     database: 'react_food_app_db',
-    password: 'jfB-11w1eTLfrQsBXMU4-g',
+    password: 'BprIhA8FU6dYrFwTzwAgxw',
     port: 26257,
     ssl: {
         rejectUnauthorized: false, // Set to true in production for security
